@@ -17,7 +17,7 @@ const [registermodal, setregistermodal] = useState("block");
     setregistermodal("block")
   }
   return (
-   <section className="padding-top-50 padding-bottom-100">
+   <section className="padding-top-50">
      <div className="padding-20">
      <div className="center text-center h2 padding-20 openSans">
        RHD STAFF SCREENING

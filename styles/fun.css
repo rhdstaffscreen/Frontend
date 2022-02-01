@@ -41,7 +41,8 @@ FUN CSS 1.0 MIT LICENSE 2021
 .montserrat{font-family: 'Montserrat', sans-serif;}
 /* normalize css */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,500&display=swap');
-*{box-sizing: border-box;font-family: 'Roboto', sans-serif;}
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap');
+*{box-sizing: border-box;font-family: 'Quicksand', sans-serif;}
 body{padding: 0px;margin: 0px;box-sizing: border-box;}
 a{text-decoration: none;background: transparent;transition: 0.3s;}a:hover{opacity: 0.9;}
 h1{font-size:xx-large;font-weight: 200;}h2{font-size:x-large}h3{font-size:larger}h4{font-size:large}h5{font-size:medium}h6{font-size:small}
