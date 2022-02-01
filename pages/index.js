@@ -22,6 +22,7 @@ const [registermodal, setregistermodal] = useState("block");
      <div className="center text-center h2 padding-20 openSans">
        RHD STAFF SCREENING
      </div>
+
      <div className="center width-500-max shadow-bingo form" style={{display:`${registermodal}`}}>
        <div className="padding-20 hr relative">
          <div className="top-10 right-10 absolute">
@@ -29,7 +30,10 @@ const [registermodal, setregistermodal] = useState("block");
          </div>
          <div className="h1 openSans">Register</div>
        </div>
-       <div className="padding-top-30 padding-bottom-30 padding-left-10 padding-right-10">
+       <div className="center text-center padding">
+       <img src="/img/ghs.jpg" className="height-100" alt="" />
+     </div>
+       <div className="padding-bottom-30 padding-left-10 padding-right-10">
          <div className="section padding">
            <TextField
            variant="outlined"
@@ -75,7 +79,10 @@ const [registermodal, setregistermodal] = useState("block");
          </div>
          <div className="h1 openSans">Login</div>
        </div>
-       <div className="padding-top-30 padding-bottom-30 padding-left-10 padding-right-10">
+       <div className="center text-center padding">
+       <img src="/img/ghs.jpg" className="height-100" alt="" />
+     </div>
+       <div className="padding-bottom-30 padding-left-10 padding-right-10">
          <div className="section padding">
            <TextField
            variant="outlined"
