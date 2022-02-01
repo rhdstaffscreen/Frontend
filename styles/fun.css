@@ -17,16 +17,6 @@ FUN CSS 1.0 MIT LICENSE 2021
   src: url(https://fonts.gstatic.com/s/poppins/v15/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-stretch: 100%;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/opensans/v27/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4taVIGxA.woff2) format('woff2');
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-}
-.open-sans{font-family: 'Open Sans', sans-serif;}
 @font-face {font-family: 'Jost'; font-style: normal;font-weight: 400;font-display: swap;src: url(https://fonts.gstatic.com/s/jost/v9/92zPtBhPNqw79Ij1E865zBUv7myjJTVFNIg8mg.woff2) format('woff2');unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
 @font-face {font-family: 'Lato';font-style: normal;font-weight: 300;font-display: swap;src: url(https://fonts.gstatic.com/s/lato/v20/S6u9w4BMUTPHh7USSwiPGQ.woff2) format('woff2');unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 .lato{font-family: 'Lato', sans-serif;}
@@ -42,7 +32,7 @@ FUN CSS 1.0 MIT LICENSE 2021
 /* normalize css */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap');
-*{box-sizing: border-box;font-family: 'Quicksand', sans-serif;}
+*{box-sizing: border-box;}
 body{padding: 0px;margin: 0px;box-sizing: border-box;}
 a{text-decoration: none;background: transparent;transition: 0.3s;}a:hover{opacity: 0.9;}
 h1{font-size:xx-large;font-weight: 200;}h2{font-size:x-large}h3{font-size:larger}h4{font-size:large}h5{font-size:medium}h6{font-size:small}
