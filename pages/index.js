@@ -17,7 +17,10 @@ const [registermodal, setregistermodal] = useState("block");
     setregistermodal("block")
   }
   return (
-   <section className="padding-top-50">
+   <section className="padding-top-50 light padding-bottom-100">
+     <div className="center text-center h2 padding-20 openSans">
+       RHD STAFF SCREENING
+     </div>
      <div className="center width-500-max shadow-bingo form" style={{display:`${registermodal}`}}>
        <div className="padding-20 hr relative">
          <div className="top-10 right-10 absolute">
@@ -76,7 +79,7 @@ const [registermodal, setregistermodal] = useState("block");
            <TextField
            variant="outlined"
            fullWidth
-           label="Emaail"
+           label="Email"
            />
          </div>
          <div className="section padding">
