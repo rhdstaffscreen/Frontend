@@ -17,7 +17,7 @@ const [registermodal, setregistermodal] = useState("block");
     setregistermodal("block")
   }
   return (
-   <section className="padding-top-50 light padding-bottom-100">
+   <section className="padding-top-50 padding-bottom-100">
      <div className="center text-center h2 padding-20 openSans">
        RHD STAFF SCREENING
      </div>
@@ -26,7 +26,7 @@ const [registermodal, setregistermodal] = useState("block");
          <div className="top-10 right-10 absolute">
          <Button variant='outlined'  onClick={Login}>Login</Button>
          </div>
-         <div className="h1">Register</div>
+         <div className="h1 openSans">Register</div>
        </div>
        <div className="padding-top-30 padding-bottom-30 padding-left-10 padding-right-10">
          <div className="section padding">
@@ -72,7 +72,7 @@ const [registermodal, setregistermodal] = useState("block");
          <div className="top-10 right-10 absolute">
          <Button variant='outlined'  onClick={Register}>Register</Button>
          </div>
-         <div className="h1">Login</div>
+         <div className="h1 openSans">Login</div>
        </div>
        <div className="padding-top-30 padding-bottom-30 padding-left-10 padding-right-10">
          <div className="section padding">
