@@ -18,6 +18,7 @@ const [registermodal, setregistermodal] = useState("block");
   }
   return (
    <section className="padding-top-50 padding-bottom-100">
+     <div className="padding-20">
      <div className="center text-center h2 padding-20 openSans">
        RHD STAFF SCREENING
      </div>
@@ -98,6 +99,7 @@ const [registermodal, setregistermodal] = useState("block");
            </Button>
          </div>
        </div>
+     </div>
      </div>
    </section>
   )
