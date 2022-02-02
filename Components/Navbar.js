@@ -5,7 +5,7 @@ import Button from "@mui/material/Button"
 import MenuItem from '@mui/material/MenuItem';
 import {useEffect, useState} from "react"
 const Navbar = () => {
-    const [data, setdata] = useState([]);
+    const [data, setdata] = useState("");
     const [Loginshow, setLoginshow] = useState("none");
     const [email, setemail] = useState("");
     useEffect(() => {
