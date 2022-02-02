@@ -17,6 +17,7 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 const Screen = () => {
+  const Endpoint = "http://rhdscreen-api.herokuapp.com"
     const [data, setdata] = useState([]);
     const [email, setemail] = useState(" ");
     const [staff, setstaff] = useState([]);
@@ -40,7 +41,7 @@ const [height, setheight] = useState("");
 const [fbsrbs, setfbsrbs] = useState("");
 const [ hepb, sethepb] = useState("");
 const [ hepc, sethepc] = useState("");
-    const Endpoint = "http://rhdscreen-api.herokuapp.com"
+   
 useEffect(() => {
 if(sessionStorage.getItem("data") != undefined){
     const user = JSON.parse(sessionStorage.getItem("data"))
@@ -253,6 +254,7 @@ const action = (
                 <th>Fullname</th>
                 <th>Bmc</th>
                 <th>Action</th>
+                <th>Print</th>
                 <tbody>
                 
                   {
@@ -270,6 +272,11 @@ const action = (
                         <td>
                             <Button variant="outlined" onClick={()=>HandleEdit(user)}>
                                 Edit
+                            </Button>
+                        </td>
+                        <td>
+                            <Button variant="outlined" onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
+                                Print
                             </Button>
                         </td>
                         </tr>

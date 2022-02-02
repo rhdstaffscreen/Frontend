@@ -99,7 +99,7 @@ const HandleLogin = ()=>{
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {fullname}, you have successfully created your account, don&#700;t forget to come along with your staff id for 
+            {fullname}, you have successfully created your account, don&#700;t forget to come along with your staff id ({staffId}) for 
             the medical screening at the RHD conference hall.
           </DialogContentText>
         </DialogContent>
@@ -138,7 +138,7 @@ const HandleLogin = ()=>{
            <TextField
            variant="outlined"
            fullWidth
-           label="Fullname"
+           label="Full name"
            onChange={(e)=>setfullname(e.target.value)}
            />
          </div>
