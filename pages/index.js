@@ -69,10 +69,13 @@ const HandleLogin = ()=>{
   sessionStorage.setItem("data" , JSON.stringify(user.data))
   window.location.assign("/screen")
   }).catch(err=>{
-  console.log(err.message)
+ 
   if(err.message === "Request failed with status code 422"){
     seterror("block")
     setmessage("Wrong credentials.")
+  }else{
+    seterror("block")
+    setmessage(err.message)
   }
   setloader("none")
   })

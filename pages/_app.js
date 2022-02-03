@@ -6,7 +6,7 @@ import Navbar from '../Components/Navbar'
 function MyApp({ Component, pageProps }) {
   return (
     <div>
-      <div className="padding-bottom-50">
+      <div className="padding-bottom-100">
       <Navbar />
       </div>
       <Component {...pageProps} />

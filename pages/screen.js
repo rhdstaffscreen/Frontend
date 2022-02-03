@@ -16,6 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+
 const Screen = () => {
   const Endpoint = "http://rhdscreen-api.herokuapp.com"
     const [data, setdata] = useState([]);
@@ -27,8 +28,11 @@ const Screen = () => {
     const [snackbar, setsnackbar] = useState(false);
     const [Bpmmodal, setBpmmodal] = useState(false);
     const [bloodmodal, setbloodmodal] = useState(false);
+    const [remarksmodal, setremarksmodal] = useState(false);
+    const [search, setsearch] = useState("");
     const [snackmessage, setsnackmessage] = useState("");
     const [loading, setloading] = useState("block");
+    const [nullshow, setnullshow] = useState("none");
 
 const [righteye, setrighteye] = useState("");
 const [lefteye, setlefteye] = useState("");
@@ -41,7 +45,21 @@ const [height, setheight] = useState("");
 const [fbsrbs, setfbsrbs] = useState("");
 const [ hepb, sethepb] = useState("");
 const [ hepc, sethepc] = useState("");
-   
+
+const [remarks, setremarks] = useState("");
+
+
+const [display, setdisplay] = useState([]);
+const [displaylefteye,  setdisplaylefteye] = useState("");
+const [displayrighteye, setdisplayrighteye] = useState("");
+const [displayhepb, setdisplayhepb] = useState("");
+const [displayhepc, setdisplayhepc] = useState("");
+const [displayheight, setdisplayheight] = useState("");
+const [displayweight, setdisplayweight] = useState("");
+const [displayhr, setdisplayhr] = useState("");
+const [displaybp, setdisplaybp] = useState("");
+const [displayfbsrbs, setdisplayfbsrbs] = useState("");
+
 useEffect(() => {
 if(sessionStorage.getItem("data") != undefined){
     const user = JSON.parse(sessionStorage.getItem("data"))
@@ -58,8 +76,9 @@ Axios.get(Endpoint + "/staff/showall" ,  {
      
     }
  }  
-).then((data)=>{
-    setstaff(data.data.staff)
+).then((userdata)=>{
+    setstaff(userdata.data.staff)
+   
     setloading("none")
 }).catch(err=>{
     console.log(err)
@@ -68,8 +87,40 @@ Axios.get(Endpoint + "/staff/showall" ,  {
 });
 
 const [Edituser, setEdituser] = useState([]);
-const HandleEdit = (current)=>{
-  setEdituser(current)
+const [update, setupdate] = useState(false);
+const HandleEdit = (currentuser)=>{
+ 
+  const p = new Promise((resolve,reject)=>{
+    if(update===false){
+      resolve(currentuser)
+    }else if(update === true){
+      setupdate(false)
+      resolve(currentuser)
+    }
+  })
+
+  p.then(selectuser=>{
+    setEdituser(selectuser)
+     setupdate(false)
+  selectuser.blood.map(blood=>{
+    setdisplayhepb(blood.hepb)
+    setdisplayhepc(blood.hepc)
+})
+
+selectuser.eyescreen.map(eye=>{
+  setdisplaylefteye(eye.lefteye)
+  setdisplayrighteye(eye.righteye)
+})
+
+selectuser.bpandbmi.map(bpm=>{
+  setdisplayhr(bpm.hr)
+  setdisplaybp(bpm.bp)
+  setdisplayheight(bpm.height)
+  setdisplayweight(bpm.weight)
+})
+
+  })
+
 if(role === "super"){
     setsupermodal(true)
 }else if(role === "eyecare"){
@@ -78,6 +129,8 @@ if(role === "super"){
 setBpmmodal(true)
 }else if(role === "blood"){
 setbloodmodal(true)
+}else if(role === "remarks"){
+  setremarksmodal(true)
 }
 }
 
@@ -196,23 +249,72 @@ setloading("none")
 }
 }
 
+const HandleRemarks = ()=>{
+  setloading("block")
+  if(role === "remarks" || role === "super"){
+if(remarks === ""){
+setsnackbar(true)
+setsnackmessage("make sure to enter inputs")
+}else{
+  Axios
+  .patch(Endpoint + "/staff/remarks/" + Edituser._id , {
+    remarks:remarks
+  },
+  {
+    headers: {
+       authorization: `Bearer ${data.token}`,
+     
+    }
+ }  
+  ).then(()=>{
+    setsnackbar(true)
+    setsnackmessage("Updated successfully")
+    setremarksmodal(false)
+    setloading("none")
+  }).catch(err=>{
+    console.log(err)
+    setloading("none")
+    setsnackbar(true)
+    setsnackmessage(err.message)
+    setloading("none")
+
+    
+  })
+}
+}else{
+  setsnackbar(true)
+setsnackmessage("Unautorized access")
+setloading("none")
+
+}
+}
 const EyeOpen = ()=>{
   setsupermodal(false)
   seteyecaremodal(true)
   setBpmmodal(false)
   setbloodmodal(false)
+  setremarksmodal(false)
 }
 const BloodOpen = ()=>{
   setsupermodal(false)
   seteyecaremodal(false)
   setBpmmodal(false)
   setbloodmodal(true)
+  setremarksmodal(false)
 }
 const BpmOpen = ()=>{
   setsupermodal(false)
   seteyecaremodal(false)
   setBpmmodal(true)
   setbloodmodal(false)
+  setremarksmodal(false)
+}
+const RemarksOpen = ()=>{
+  setsupermodal(false)
+  seteyecaremodal(false)
+  setBpmmodal(false)
+  setbloodmodal(false)
+  setremarksmodal(true)
 }
 const action = (
   <React.Fragment>
@@ -246,7 +348,16 @@ const action = (
                 </div>
             </div>
         </div>
+
             }
+
+        <div className="section container">
+                  <TextField
+                  label="Search with id"
+                  variant="outlined"
+                  onChange={(e)=>setsearch(e.target.value)}
+                  />
+        </div>
 
             <div className="container">
             <table className="table stripped text-small">
@@ -258,7 +369,13 @@ const action = (
                 <tbody>
                 
                   {
-                      staff.map(user=>(
+                      staff.filter(staffdata=>{
+                        if(search === ""){
+                          return staff
+                        }else if(search.toString().includes(staffdata.staffId.toString())){
+                          return staffdata
+                        }
+                      }).map(user=>(
                         <tr key={user._id}>
                         <td>
                             {user.staffId}
@@ -284,7 +401,9 @@ const action = (
                   }
                 </tbody>
             </table>
-    
+    <center style={{display:`${nullshow}`}}>
+      Nothing to show
+    </center>
             </div>
             <Dialog
         open={eyecaremodal}
@@ -302,36 +421,43 @@ const action = (
                     {Edituser.fullName}
                   </div>
                     {
-                      Edituser != [] &&
+                      update == true &&
                       <div className="section padding">
                       <TextField
                       variant="outlined"
                       fullWidth
                       label="Id"
-                      defaultValue={Edituser._id}
+                      defaultValue={Edituser.staffId}
                       disabled
                       />
                   </div>
 
                   }
+                  {update == true &&
+                  <div>
+                      <div className="section padding">
                     
-            
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Right Eye"
-                        onChange={(e)=>setrighteye(e.target.value)}
-                        />
-                    </div>
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Left Eye"
-                        onChange={(e)=>setlefteye(e.target.value)}
-                        />
-                    </div>
+                    <TextField
+                    variant="outlined"
+                    fullWidth
+                    label="Right Eye"
+                    defaultValue={displayrighteye}
+                    onChange={(e)=>setrighteye(e.target.value)}
+                    />
+                    
+                </div>
+                <div className="section padding">
+                    <TextField
+                    variant="outlined"
+                    fullWidth
+                    label="Left Eye"
+                    defaultValue={displaylefteye}
+                    onChange={(e)=>setlefteye(e.target.value)}
+                    />
+                </div>
+                  </div>
+
+                }
                     <div>
                     <center style={{display:`${loading}`}}>
                             <div className="loaderbox">
@@ -360,6 +486,170 @@ const action = (
           </Button>
         </DialogActions>
       </Dialog>
+            <Dialog
+        open={remarksmodal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Remarks"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          <div className="editmodal" >
+                <div className="form center">
+                <div className="section padding">
+                    {Edituser.fullName}
+                  </div>
+                    {
+                      update == true &&
+                      <div>
+                    <div className="section padding">
+                      <TextField
+                      variant="outlined"
+                      fullWidth
+                      label="Id"
+                      defaultValue={Edituser.staffId}
+                      disabled
+                      />
+                  </div>
+             
+                      </div>
+
+                  }
+                  { update === true &&
+                    <div>
+                          <div className="section padding h4">
+                           Eye Care
+                         </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Right Eye"
+                           defaultValue={displayrighteye}
+                           disabled
+                           />
+                       </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Right Eye"
+                           defaultValue={displaylefteye}
+                           disabled
+                           />
+                       </div>
+                    </div>
+                  }
+                  {    update == true &&
+                    <div>
+                          <div className="section padding h4">
+                           Blood
+                         </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Hepb"
+                           defaultValue={displayhepb}
+                           disabled
+                           />
+                       </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Hepc"
+                           defaultValue={displayhepc}
+                           disabled
+                           />
+                       </div>
+                    </div>
+                  }
+                  {     update == true &&
+                    <div>
+                          <div className="section padding h4">
+                          BPANDBMI
+                         </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Bp"
+                           defaultValue={displaybp}
+                           disabled
+                           />
+                       </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Height"
+                           defaultValue={displayheight}
+                           disabled
+                           />
+                       </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Hr"
+                           defaultValue={displayhr}
+                           disabled
+                           />
+                       </div>
+                         <div className="padding">
+                           <TextField
+                           variant="outlined"
+                           fullWidth
+                           label="Weight"
+                           defaultValue={displayweight}
+                           disabled
+                           />
+                       </div>
+                    </div>
+                  }
+                    
+        
+                    <div className="section padding">
+                        <TextField
+                        variant="outlined"
+                        fullWidth
+                        label="Remarks"
+                        multiline
+                        rows={2}
+                        onChange={(e)=>setremarks(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                    <center style={{display:`${loading}`}}>
+                            <div className="loaderbox">
+                         <div className="loadercontainer">
+                           <span className="loadercircle"></span>
+                           <span className="loadercircle"></span>
+                           <span className="loadercircle"></span>
+                           <span className="loadercircle"></span>
+                         </div>
+                       </div>
+                       </center>
+                    </div>
+                    <div className="section padding">
+                    <Button variant="contained" color='primary' className="capitalized" onClick={HandleRemarks}>
+                        Submit
+                    </Button>
+                    </div>
+                </div>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
+          <Button onClick={()=>setremarksmodal(false)} color="error" autoFocus>
+           Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
 
             <Dialog
         open={Bpmmodal}
@@ -377,22 +667,27 @@ const action = (
                     {Edituser.fullName}
                   </div>
                     {
-                      Edituser != [] &&
+                      update == true &&
                       <div className="section padding">
                       <TextField
                       variant="outlined"
                       fullWidth
                       label="Id"
-                      defaultValue={Edituser._id}
+                      defaultValue={Edituser.staffId}
                       disabled
                       />
                   </div>
-                    }
-                    <div className="section padding">
+                  }
+
+                  {
+                    displayhepb != "" &&
+                    <div>
+                               <div className="section padding">
                         <TextField
                         variant="outlined"
                         fullWidth
                         label="Bp"
+                        defaultValue={displaybp}
                         onChange={(e)=>setbp(e.target.value)}
                         />
                     </div>
@@ -401,6 +696,7 @@ const action = (
                         variant="outlined"
                         fullWidth
                         label="Hr"
+                        defaultValue={displayhr}
                         onChange={(e)=>sethr(e.target.value)}
                         />
                     </div>
@@ -408,7 +704,8 @@ const action = (
                         <TextField
                         variant="outlined"
                         fullWidth
-                        label="Hr"
+                        label="Weight"
+                        defaultValue={displayweight}
                         onChange={(e)=>setweight(e.target.value)}
                         />
                     </div>
@@ -416,10 +713,14 @@ const action = (
                         <TextField
                         variant="outlined"
                         fullWidth
-                        label="Hr"
+                        label="Height"
+                        defaultValue={displayheight}
                         onChange={(e)=>setheight(e.target.value)}
                         />
                     </div>
+                    </div>
+                  }
+           
                     <div>
                     <center style={{display:`${loading}`}}>
                             <div className="loaderbox">
@@ -467,17 +768,21 @@ const action = (
                   </div>
                     
                     {
-                      Edituser != [] &&
+                      update == true &&
                       <div className="section padding">
                       <TextField
                       variant="outlined"
                       fullWidth
                       label="Id"
-                      defaultValue={Edituser._id}
+                      defaultValue={Edituser.staffId}
                       disabled
                       />
                   </div>
                     }
+
+                    {
+                      displayhepb != "" &&
+                      <div>
                     <div className="section padding">
                         <TextField
                         variant="outlined"
@@ -491,6 +796,7 @@ const action = (
                         variant="outlined"
                         fullWidth
                         label="HepB"
+                        defaultValue={displayhepb}
                         onChange={(e)=>sethepb(e.target.value)}
                         />
                     </div>
@@ -498,10 +804,14 @@ const action = (
                         <TextField
                         variant="outlined"
                         fullWidth
-                        label="HepB"
+                        label="HepC"
+                        defaultValue={displayhepc}
                         onChange={(e)=>sethepc(e.target.value)}
                         />
                     </div>
+                      </div>
+                    }
+                
                     <div>
                     <center style={{display:`${loading}`}}>
                             <div className="loaderbox">
@@ -549,6 +859,9 @@ const action = (
           <DialogContentText id="alert-dialog-description">
           <div className="">
             <div className="section">
+              Super admin has control over all database
+            </div>
+            <div className="section">
             <Button fullWidth variant="contained" onClick={EyeOpen}>Eye Care</Button>
             </div>
             <div className="section">
@@ -556,6 +869,9 @@ const action = (
             </div>
             <div className="section">
             <Button fullWidth variant="contained" onClick={BpmOpen}>BPANDBMI</Button>
+            </div>
+            <div className="section">
+            <Button fullWidth variant="contained" onClick={RemarksOpen}>Remarks</Button>
             </div>
           </div>
           </DialogContentText>

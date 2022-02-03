@@ -3,6 +3,7 @@ import Image from 'next/image'
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import MenuItem from '@mui/material/MenuItem';
+import Link from "next/link"
 import {useEffect, useState} from "react"
 const Navbar = () => {
     const [data, setdata] = useState("");
@@ -25,10 +26,14 @@ const Navbar = () => {
         <div className='fixed-top white openSans' style={{display:`${Loginshow}`}}>
         <div className="navigation-bar hr">
         <div className="">
-            <img src="/img/logo.png" className="height-50" alt="" />
+           <Link href="/screen">
+               <a>
+               <img src="/img/ghs.jpg" className="height-50" alt="" />
+               </a>
+           </Link>
         </div>
-            <div className="padding">
-                <div>
+            <div className="padding hide-small">
+                <div className='button'>
                     RHD Staff Medical Screening
                 </div>
             </div>
