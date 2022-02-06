@@ -45,7 +45,8 @@ const HandleRegister = ()=>{
   setloader("none")
     setmodal(true)
   }).catch(err=>{
-  console.log(err)
+    seterror("block")
+    setmessage(err.message)
   setloader("none")
   })
   }
@@ -85,10 +86,13 @@ const HandleLogin = ()=>{
   const Login = ()=>{
     setloginmodal("block")
     setregistermodal("none")
+    seterror("none")
   }
   const Register = ()=>{
     setloginmodal("none")
     setregistermodal("block")
+    seterror("none")
+
   }
   return (
    <section className="padding-top-50">
@@ -173,13 +177,13 @@ const HandleLogin = ()=>{
           </div>
         </div>
          </div>
+         <div className="section padding"  style={{display:`${error}`}}>
+         <Alert severity="error">{message}</Alert>
+         </div>
          <div className="section padding">
            <Button variant="contained" color='primary' className="capitalized" onClick={HandleRegister}>
              Register
            </Button>
-         </div>
-         <div className="section padding"  style={{display:`${error}`}}>
-         <Alert severity="error">{message}</Alert>
          </div>
        </div>
      </div>

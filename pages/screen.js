@@ -59,6 +59,7 @@ const [displayweight, setdisplayweight] = useState("");
 const [displayhr, setdisplayhr] = useState("");
 const [displaybp, setdisplaybp] = useState("");
 const [displayfbsrbs, setdisplayfbsrbs] = useState("");
+const [displayremarks, setdisplayremarks] = useState("");
 
 useEffect(() => {
 if(sessionStorage.getItem("data") != undefined){
@@ -89,7 +90,16 @@ Axios.get(Endpoint + "/staff/showall" ,  {
 const [Edituser, setEdituser] = useState([]);
 const [update, setupdate] = useState(false);
 const HandleEdit = (currentuser)=>{
- 
+  setdisplayhepb("")
+    setdisplayhepc("")
+    setdisplaylefteye("")
+    setdisplayrighteye("")
+    setdisplayhr("")
+    setdisplaybp("")
+    setdisplayheight("")
+    setdisplayweight("")
+    setdisplayfbsrbs("")
+    setdisplayremarks("")
   const p = new Promise((resolve,reject)=>{
     if(update===false){
       resolve(currentuser)
@@ -101,23 +111,31 @@ const HandleEdit = (currentuser)=>{
 
   p.then(selectuser=>{
     setEdituser(selectuser)
-     setupdate(false)
-  selectuser.blood.map(blood=>{
-    setdisplayhepb(blood.hepb)
-    setdisplayhepc(blood.hepc)
-})
-
+    console.log(selectuser)
+     setupdate(true)
+     if(selectuser.blood != []){
+      selectuser.blood.map(blood=>{
+        setdisplayhepb(blood.hepb)
+        setdisplayhepc(blood.hepc)
+        setdisplayfbsrbs(blood.fbsrbs)
+    })
+     }
+     if(selectuser.eyescreen != []){
 selectuser.eyescreen.map(eye=>{
   setdisplaylefteye(eye.lefteye)
   setdisplayrighteye(eye.righteye)
 })
-
+     }
+if(selectuser.bpandbmi != []){
 selectuser.bpandbmi.map(bpm=>{
   setdisplayhr(bpm.hr)
   setdisplaybp(bpm.bp)
   setdisplayheight(bpm.height)
   setdisplayweight(bpm.weight)
 })
+}
+
+setdisplayremarks(selectuser.remarks)
 
   })
 
@@ -417,11 +435,9 @@ const action = (
           <DialogContentText id="alert-dialog-description">
           <div className="editmodal" >
                 <div className="form center">
-                <div className="section padding">
-                    {Edituser.fullName}
-                  </div>
+            
                     {
-                      update == true &&
+                      update === true &&
                       <div className="section padding">
                       <TextField
                       variant="outlined"
@@ -433,7 +449,7 @@ const action = (
                   </div>
 
                   }
-                  {update == true &&
+                  {update === true &&
                   <div>
                       <div className="section padding">
                     
@@ -498,11 +514,9 @@ const action = (
           <DialogContentText id="alert-dialog-description">
           <div className="editmodal" >
                 <div className="form center">
-                <div className="section padding">
-                    {Edituser.fullName}
-                  </div>
+            
                     {
-                      update == true &&
+                      update === true &&
                       <div>
                     <div className="section padding">
                       <TextField
@@ -542,7 +556,7 @@ const action = (
                        </div>
                     </div>
                   }
-                  {    update == true &&
+                  {    update === true &&
                     <div>
                           <div className="section padding h4">
                            Blood
@@ -567,7 +581,7 @@ const action = (
                        </div>
                     </div>
                   }
-                  {     update == true &&
+                  {     update === true &&
                     <div>
                           <div className="section padding h4">
                           BPANDBMI
@@ -608,20 +622,24 @@ const action = (
                            disabled
                            />
                        </div>
+                       <div className="section padding">
+                            <TextField
+                            variant="outlined"
+                            fullWidth
+                            label="Remarks"
+                            multiline
+                            rows={2}
+                            defaultValue={displayremarks}
+                            onChange={(e)=>setremarks(e.target.value)}
+                            />
+                          </div>
                     </div>
+                           
+
                   }
                     
         
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Remarks"
-                        multiline
-                        rows={2}
-                        onChange={(e)=>setremarks(e.target.value)}
-                        />
-                    </div>
+          
                     <div>
                     <center style={{display:`${loading}`}}>
                             <div className="loaderbox">
@@ -663,11 +681,8 @@ const action = (
           <DialogContentText id="alert-dialog-description">
           <div className="editmodal" >
                 <div className="form center">
-                <div className="section padding">
-                    {Edituser.fullName}
-                  </div>
                     {
-                      update == true &&
+                      update === true &&
                       <div className="section padding">
                       <TextField
                       variant="outlined"
@@ -763,12 +778,10 @@ const action = (
           <DialogContentText id="alert-dialog-description">
           <div className="editmodal" >
                 <div className="form center">
-                <div className="section padding">
-                    {Edituser.fullName}
-                  </div>
+  
                     
                     {
-                      update == true &&
+                      update === true &&
                       <div className="section padding">
                       <TextField
                       variant="outlined"
@@ -781,7 +794,7 @@ const action = (
                     }
 
                     {
-                      displayhepb != "" &&
+                      update === true &&
                       <div>
                     <div className="section padding">
                         <TextField
@@ -789,6 +802,7 @@ const action = (
                         fullWidth
                         label="fbsrbs"
                         onChange={(e)=>setfbsrbs(e.target.value)}
+                        defaultValue={displayfbsrbs}
                         />
                     </div>
                     <div className="section padding">
