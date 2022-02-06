@@ -6,11 +6,11 @@ import Navbar from '../Components/Navbar'
 function MyApp({ Component, pageProps }) {
   return (
     <div>
-      <div className="padding-bottom-100">
-      <Navbar />
+      <div className="">
+      {/* <Navbar /> */}
       </div>
       <Component {...pageProps} />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

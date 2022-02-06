@@ -12,6 +12,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
 
 export default function Home() {
   const Endpoint = "http://rhdscreen-api.herokuapp.com"
@@ -96,6 +98,9 @@ const HandleLogin = ()=>{
   }
   return (
    <section className="padding-top-50">
+     <div>
+       
+     </div>
         <Dialog
         open={modal}
         aria-labelledby="alert-dialog-title"
@@ -235,6 +240,10 @@ const HandleLogin = ()=>{
          </div>
        </div>
      </div>
+     </div>
+
+     <div>
+       <Footer />
      </div>
    </section>
   )

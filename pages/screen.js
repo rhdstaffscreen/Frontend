@@ -17,6 +17,8 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { PureComponent } from 'react';
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
 const Screen = () => {
   const chartdata = [
     { name: 'Group A', value: 400 },
@@ -68,7 +70,7 @@ const [displayhr, setdisplayhr] = useState("");
 const [displaybp, setdisplaybp] = useState("");
 const [displayfbsrbs, setdisplayfbsrbs] = useState("");
 const [displayremarks, setdisplayremarks] = useState("");
-
+const [hideremarks, sethideremarks] = useState("none");
 useEffect(() => {
 if(sessionStorage.getItem("data") != undefined){
     const user = JSON.parse(sessionStorage.getItem("data"))
@@ -90,6 +92,9 @@ Axios.get(Endpoint + "/staff/showall" ,  {
     setloading("none")
     if(role === "super"){
       setshowsuper("block")
+    }
+    if(role != "remarks"){
+      sethideremarks("block")
     }
 }).catch(err=>{
     console.log(err)
@@ -358,6 +363,9 @@ const action = (
 );
     return ( 
         <section>
+          <div className="padding-bottom-100">
+            <Navbar />
+          </div>
    <Snackbar
         open={snackbar}
         autoHideDuration={6000}
@@ -400,7 +408,11 @@ const action = (
                 </th>
                 <th>Bmc</th>
                 <th>Action</th>
-                <th>Print</th>
+                <th>
+                <div style={{display:`${hideremarks}`}}>
+                  Print
+                  </div>
+                </th>
                 <tbody>
                 
                   {
@@ -429,9 +441,12 @@ const action = (
                             </Button>
                         </td>
                         <td>
-                            <Button variant="outlined" onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
+                        <div style={{display:`${hideremarks}`}}>
+                        <Button variant="outlined" onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
                                 Print
-                            </Button>
+                        </Button>
+                        </div>
+                        
                         </td>
                         </tr>
                       ))
@@ -978,6 +993,9 @@ const action = (
         </DialogActions>
       </Dialog>
         
+        <div>
+          <Footer />
+        </div>
         </section>
      );
 }

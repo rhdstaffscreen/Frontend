@@ -99,28 +99,28 @@ const Remarks = () => {
                     Print Results
                 </Button>
             </div>
-            <div className="center width-800-max border padding">
+            <div className="center width-800-max border">
             <div className="center text-center padding">
-            <img src="/img/ghs.jpg" className="height-200" alt="" />
+            <img src="/img/ghs.jpg" className="height-100" alt="" />
             </div>
             <div  className="center text-center padding">
-                <div className="h4">
+                <div className="h6">
                     GHANA HEALTH SERVICE RHD STAFF SCREENING RESULTS <br />
                     </div>
             </div>
-            <div className="padding hr"></div>
+         
 
             <div>
-                <div className="padding h4 padding-top-20">PERSONAL INFORMATION</div>
-                <div className="margin-top-10">
-                    <div className="padding">
-                        <div>Full Name</div>
+                <div className="padding h6 top-border">PERSONAL INFORMATION</div>
+                <div className="">
+                    <div className="padding row-flex">
+                        <div>Full Name: </div>
                         <div className="opacity-3">
                         {display.fullName}
                         </div>
                     </div>
-                    <div className="padding">
-                        <div>Id</div>
+                    <div className="padding row-flex">
+                        <div>Id: </div>
                         <div className="opacity-3">
                         {display.staffId}
                         </div>
@@ -128,71 +128,87 @@ const Remarks = () => {
                 </div>
             </div>
             <div>
-                <div className="padding h4 padding-top-20">EYE CARE</div>
-                <div className="row light margin-top-10">
+                <div className="padding h6 top-border">EYE CARE</div>
+                <div className="row light ">
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>Right Eye</div>
+                    <div className="row-flex">
+                    <div>Right Eye: </div>
                         <div className="opacity-3">
                             {righteye}
                         </div>
                     </div>
+                    </div>
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>Left Eye</div>
+                      <div className="row-flex">
+                      <div>Left Eye: </div>
                         <div className="opacity-3">
                             {lefteye}
                         </div>
+                      </div>
                     </div>
                 </div>
             </div>
             <div>
-                <div className="padding h4 padding-top-20">Blood</div>
-                <div className="row light margin-top-10">
+                <div className="padding h6 top-border">Blood</div>
+                <div className="row light ">
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>HepB</div>
+                   <div className="row-flex">
+                   <div>HepB: </div>
                         <div className="opacity-3">
                             {hepb}
                         </div>
+                   </div>
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>HepC</div>
+                     <div className="row-flex">
+                     <div>HepC: </div>
                         <div className="opacity-3">
                             {hepc}
                         </div>
+                     </div>
                     </div>
                 </div>
             </div>
             <div>
-                <div className="padding h4 padding-top-20">BPANDBMI</div>
-                <div className="row light margin-top-10">
+                <div className="padding h6 top-border">BPANDBMI</div>
+                <div className="row light ">
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>Bp</div>
+                        <div className="row-flex">
+                        <div>Bp: </div>
                         <div className="opacity-3">
                             {bp}
                         </div>
+                        </div>
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>Height</div>
+                      <div className="row-flex">
+                      <div>Height: </div>
                         <div className="opacity-3">
                            {height}
                         </div>
+                      </div>
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>Hr</div>
+                       <div className="row-flex">
+                       <div>Hr: </div>
                         <div className="opacity-3">
                             {hr}
                         </div>
+                       </div>
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
-                        <div>Weight</div>
+                       <div className="row-flex">
+                       <div>Weight: </div>
                         <div className="opacity-3">
                             {weight}
                         </div>
+                       </div>
                     </div>
                 </div>
             </div>
             <div>
-                <div className="padding h4 padding-top-20">REMARKS</div>
-                <div className="light margin-top-10">
+                <div className="padding h6 top-border">REMARKS</div>
+                <div className="light ">
                     <div className="padding">
                         <div className="opacity-3">
                          {dremarks}
