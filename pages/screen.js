@@ -16,8 +16,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
+import { PureComponent } from 'react';
 const Screen = () => {
+  const chartdata = [
+    { name: 'Group A', value: 400 },
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 300 },
+    { name: 'Group D', value: 200 },
+  ];
+
   const Endpoint = "http://rhdscreen-api.herokuapp.com"
     const [data, setdata] = useState([]);
     const [email, setemail] = useState(" ");
@@ -33,6 +40,7 @@ const Screen = () => {
     const [snackmessage, setsnackmessage] = useState("");
     const [loading, setloading] = useState("block");
     const [nullshow, setnullshow] = useState("none");
+    const [showsuper, setshowsuper] = useState("none");
 
 const [righteye, setrighteye] = useState("");
 const [lefteye, setlefteye] = useState("");
@@ -79,8 +87,10 @@ Axios.get(Endpoint + "/staff/showall" ,  {
  }  
 ).then((userdata)=>{
     setstaff(userdata.data.staff)
-   
     setloading("none")
+    if(role === "super"){
+      setshowsuper("block")
+    }
 }).catch(err=>{
     console.log(err)
     setloading("none")
@@ -365,6 +375,9 @@ const action = (
                   {role}
                 </div>
             </div>
+            <div>
+    
+            </div>
         </div>
 
             }
@@ -377,10 +390,14 @@ const action = (
                   />
         </div>
 
-            <div className="container">
+            <div className="container horizontal-scroll">
             <table className="table stripped text-small">
                 <th>Staff Id</th>
-                <th>Fullname</th>
+                <th>
+                  <div style={{display:`${showsuper}`}}>
+                  Fullname
+                  </div>
+                </th>
                 <th>Bmc</th>
                 <th>Action</th>
                 <th>Print</th>
@@ -399,7 +416,9 @@ const action = (
                             {user.staffId}
                         </td>
                         <td>
-                            {user.fullName}
+                           <div style={{display:`${showsuper}`}}>
+                           {user.fullName}
+                           </div>
                         </td>
                         <td>
                             {user.bmc}
@@ -453,23 +472,67 @@ const action = (
                   <div>
                       <div className="section padding">
                     
-                    <TextField
-                    variant="outlined"
-                    fullWidth
-                    label="Right Eye"
-                    defaultValue={displayrighteye}
-                    onChange={(e)=>setrighteye(e.target.value)}
-                    />
+        
+                         <TextField
+                              id="outlined-select-currency-native"
+                              select
+                              label="Right Eye"
+                              SelectProps={{
+                                native: true,
+                              }}
+                              fullWidth
+                              defaultValue={displayrighteye}
+                              onChange={(e)=>setrighteye(e.target.value)}
+                            >
+                              <option value=""> </option>
+                              <option value="6/12">6/12</option>
+                              <option value="6/18">6/18</option>
+                              <option value="6/24">6/24</option>
+                              <option value="6/36">6/36</option>
+                              <option value="6/6">6/6</option>
+                              <option value="6/60">6/60</option>
+                              <option value="6/9">6/9</option>
+                              <option value="CF1M">CF1M</option>
+                              <option value="CF2M">CF2M</option>
+                              <option value="CF3M">CF3M</option>
+                              <option value="CF4M">CF4M</option>
+                              <option value="CF5M">CF5M</option>
+                              <option value="NPL">NPL</option>
+                              <option value="PL">PL</option>
+                              <option value="Blanks">BLANKS</option>
+                       </TextField>
                     
                 </div>
                 <div className="section padding">
-                    <TextField
-                    variant="outlined"
-                    fullWidth
-                    label="Left Eye"
-                    defaultValue={displaylefteye}
-                    onChange={(e)=>setlefteye(e.target.value)}
-                    />
+             
+                               <TextField
+                              id="outlined-select-currency-native"
+                              select
+                              label="Left Eye"
+                              SelectProps={{
+                                native: true,
+                              }}
+                              fullWidth
+                              defaultValue={displaylefteye}
+                              onChange={(e)=>setlefteye(e.target.value)}
+                            >
+                              <option value=""> </option>
+                              <option value="6/12">6/12</option>
+                              <option value="6/18">6/18</option>
+                              <option value="6/24">6/24</option>
+                              <option value="6/36">6/36</option>
+                              <option value="6/6">6/6</option>
+                              <option value="6/60">6/60</option>
+                              <option value="6/9">6/9</option>
+                              <option value="CF1M">CF1M</option>
+                              <option value="CF2M">CF2M</option>
+                              <option value="CF3M">CF3M</option>
+                              <option value="CF4M">CF4M</option>
+                              <option value="CF5M">CF5M</option>
+                              <option value="NPL">NPL</option>
+                              <option value="PL">PL</option>
+                              <option value="Blanks">BLANKS</option>
+                       </TextField>
                 </div>
                   </div>
 
@@ -806,22 +869,39 @@ const action = (
                         />
                     </div>
                     <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="HepB"
-                        defaultValue={displayhepb}
-                        onChange={(e)=>sethepb(e.target.value)}
-                        />
+
+                                 <TextField
+          id="outlined-select-currency-native"
+          select
+          label="HEPATITIS B"
+          SelectProps={{
+            native: true,
+          }}
+          fullWidth
+          defaultValue={displayhepb}
+          onChange={(e)=>sethepb(e.target.value)}
+        >
+          <option value=""> </option>
+          <option value="Positive(+)">Positive(+)</option>
+          <option value="Negative(-)">Negative(-)</option>
+        </TextField>
                     </div>
                     <div className="section padding">
                         <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="HepC"
-                        defaultValue={displayhepc}
-                        onChange={(e)=>sethepc(e.target.value)}
-                        />
+                          id="outlined-select-currency-native"
+                          select
+                          label="HEPATITIS C"
+                          SelectProps={{
+                            native: true,
+                          }}
+                          fullWidth
+                          defaultValue={displayhepc}
+                          onChange={(e)=>sethepc(e.target.value)}
+                        >
+                          <option value=""> </option>
+                          <option value="Positive(+)">Positive(+)</option>
+                          <option value="Negative(-)">Negative(-)</option>
+                        </TextField>
                     </div>
                       </div>
                     }
