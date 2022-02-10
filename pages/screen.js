@@ -19,6 +19,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { PureComponent } from 'react';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import LocalPrintshopOutlinedIcon from '@mui/icons-material/LocalPrintshopOutlined';
 const Screen = () => {
   const chartdata = [
     { name: 'Group A', value: 400 },
@@ -409,7 +411,7 @@ const action = (
                 <th>Bmc</th>
                 <th>Action</th>
                 <th>
-                <div style={{display:`${hideremarks}`}}>
+                <div style={{display:`${showsuper}`}}>
                   Print
                   </div>
                 </th>
@@ -436,13 +438,13 @@ const action = (
                             {user.bmc}
                         </td>
                         <td>
-                            <Button variant="outlined" onClick={()=>HandleEdit(user)}>
+                            <Button color="success" variant="outlined" startIcon={<CreateOutlinedIcon />} onClick={()=>HandleEdit(user)}>
                                 Edit
                             </Button>
                         </td>
                         <td>
-                        <div style={{display:`${hideremarks}`}}>
-                        <Button variant="outlined" onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
+                        <div style={{display:`${showsuper}`}}>
+                        <Button variant="outlined" startIcon={<LocalPrintshopOutlinedIcon/>} onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
                                 Print
                         </Button>
                         </div>
