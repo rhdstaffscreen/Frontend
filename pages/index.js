@@ -16,7 +16,7 @@ import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 
 export default function Home() {
-  const Endpoint = "http://rhdscreen-api.herokuapp.com"
+  const Endpoint = "https://rhdscreen-api.herokuapp.com"
 const [loginmodal, setloginmodal] = useState("none");
 const [registermodal, setregistermodal] = useState("block");
 const [fullname, setfullname] = useState("");
