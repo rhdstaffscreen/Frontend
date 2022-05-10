@@ -20,7 +20,15 @@ const Navbar = () => {
         }
     });
     const HandleLogout = ()=>{
-    sessionStorage.removeItem("data")
+    const p = new Promise((resolve ,reject)=>{
+        if(sessionStorage.getItem("data") != undefined){
+            resolve("/")
+            sessionStorage.removeItem("data")
+        }
+    })
+   p.then(rout=>{
+       window.location.assign(rout)
+   })
     }
     return ( 
         <div className='fixed-top white openSans' style={{display:`${Loginshow}`}}>

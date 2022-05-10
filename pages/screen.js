@@ -117,18 +117,18 @@ const [Edituser, setEdituser] = useState([]);
 const [update, setupdate] = useState(false);
 const HandleEdit = (currentuser)=>{
   setdisplayhepb("")
-    setdisplayhepc("")
-    setdisplaylefteye("")
-    setdisplayrighteye("")
-    setdisplayhr("")
-    setdisplaybp("")
-    setdisplayheight("")
-    setdisplayweight("")
-    setdisplayfbsrbs("")
-    setdisplayremarks("")
-    setdisplaybmi("")
+  setdisplayhepc("")
+  setdisplaylefteye("")
+  setdisplayrighteye("")
+  setdisplayhr("")
+  setdisplaybp("")
+  setdisplayheight("")
+  setdisplayweight("")
+  setdisplayfbsrbs("")
+  setdisplayremarks("")
+  setdisplaybmi("")
   const p = new Promise((resolve,reject)=>{
-    if(update===false){
+    if(update === false){
       resolve(currentuser)
     }else if(update === true){
       setupdate(false)
@@ -139,19 +139,25 @@ const HandleEdit = (currentuser)=>{
   p.then(selectuser=>{
     setEdituser(selectuser)
     console.log(selectuser)
-     setupdate(true)
+   
      if(selectuser.blood != []){
       selectuser.blood.map(blood=>{
         setdisplayhepb(blood.hepb)
         setdisplayhepc(blood.hepc)
         setdisplayfbsrbs(blood.fbsrbs)
+        setupdate(true)
     })
+     }else{
+      setupdate(true)
      }
      if(selectuser.eyescreen != []){
 selectuser.eyescreen.map(eye=>{
   setdisplaylefteye(eye.lefteye)
   setdisplayrighteye(eye.righteye)
+  setupdate(true)
 })
+     }else{
+      setupdate(true)
      }
 if(selectuser.bpandbmi != []){
 selectuser.bpandbmi.map(bpm=>{
@@ -160,8 +166,11 @@ selectuser.bpandbmi.map(bpm=>{
   setdisplayheight(bpm.height)
   setdisplayweight(bpm.weight)
   setdisplaybmi(bpm.bmi)
+  setupdate(true)
 })
-}
+}else{
+  setupdate(true)
+ }
 
 setdisplayremarks(selectuser.remarks)
 
@@ -770,7 +779,10 @@ aria-describedby="alert-dialog-description"
 </DialogContent>
 <DialogActions>
 {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
-<Button onClick={()=>setremarksmodal(false)} color="error" autoFocus>
+<Button onClick={()=>{
+  setremarksmodal(false)
+  // setupdate(false)
+}} color="error" autoFocus>
   Cancel
 </Button>
 </DialogActions>

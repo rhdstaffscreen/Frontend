@@ -7,7 +7,7 @@ const Footer = () => {
                    &copy; {Year} Ghana Health Service RHD Staff Screening
                 </div>
                 <div className="section">
-                Powered by: <span className="opacity-3"> Wa Health Directorate IT UNIT</span>
+                Powered by: <span className="opacity-3"> Upper West Health Directorate IT UNIT</span>
                 </div>
             </div>
         </section>
