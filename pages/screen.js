@@ -29,7 +29,7 @@ const Screen = () => {
     { name: 'Group D', value: 200 },
   ];
 
-  const Endpoint = "http://rhdscreen-api.herokuapp.com"
+  const Endpoint = "https://rhdscreen-api.herokuapp.com"
     const [data, setdata] = useState([]);
     const [email, setemail] = useState(" ");
     const [staff, setstaff] = useState([]);
