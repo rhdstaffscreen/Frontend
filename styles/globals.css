@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
-*{font-family: 'Open Sans', sans-serif;}
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{font-family: 'Raleway', sans-serif;}
 .form{
   border: 5px solid #E3E6E8;
   max-width: 500px;
 }
+.space-between{justify-content: space-between;}
 Button{text-transform: capitalize;}
 
 *, *::before, *::after {
@@ -69,3 +70,9 @@ body{
   }
 }
 .editmodal{min-width: 300px;max-width: 500px;width: 500px;}
+.results{
+  background-image: url('/public/img/logo.png');
+  /* opacity: 0.5; */
+  background-position: center;
+  background-size: 50% 50%;
+}

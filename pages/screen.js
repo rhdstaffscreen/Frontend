@@ -45,7 +45,8 @@ const Screen = () => {
     const [loading, setloading] = useState("block");
     const [nullshow, setnullshow] = useState("none");
     const [showsuper, setshowsuper] = useState("none");
-
+    const [loadOnce, setloadOnce] = useState(false)
+    const [total, settotal] = useState("")
 const [righteye, setrighteye] = useState("");
 const [lefteye, setlefteye] = useState("");
 
@@ -53,6 +54,7 @@ const [bp, setbp] = useState("");
 const [hr, sethr] = useState("");
 const [weight, setweight] = useState("");
 const [height, setheight] = useState("");
+const [bmi, setbmi] = useState("")
 
 const [fbsrbs, setfbsrbs] = useState("");
 const [ hepb, sethepb] = useState("");
@@ -73,6 +75,8 @@ const [displaybp, setdisplaybp] = useState("");
 const [displayfbsrbs, setdisplayfbsrbs] = useState("");
 const [displayremarks, setdisplayremarks] = useState("");
 const [hideremarks, sethideremarks] = useState("none");
+const [displaybmi, setdisplaybmi] = useState("")
+
 useEffect(() => {
 if(sessionStorage.getItem("data") != undefined){
     const user = JSON.parse(sessionStorage.getItem("data"))
@@ -83,6 +87,7 @@ if(sessionStorage.getItem("data") != undefined){
     }
 },[]);
 useEffect(() => {
+  if(loadOnce === false){
 Axios.get(Endpoint + "/staff/showall" ,  {
     headers: {
        authorization: `Bearer ${data.token}`,
@@ -90,7 +95,9 @@ Axios.get(Endpoint + "/staff/showall" ,  {
     }
  }  
 ).then((userdata)=>{
+  setloadOnce(true)
     setstaff(userdata.data.staff)
+    settotal(userdata.data.staff.length)
     setloading("none")
     if(role === "super"){
       setshowsuper("block")
@@ -101,7 +108,9 @@ Axios.get(Endpoint + "/staff/showall" ,  {
 }).catch(err=>{
     console.log(err)
     setloading("none")
+    setloadOnce(false)
 })
+  }
 });
 
 const [Edituser, setEdituser] = useState([]);
@@ -117,6 +126,7 @@ const HandleEdit = (currentuser)=>{
     setdisplayweight("")
     setdisplayfbsrbs("")
     setdisplayremarks("")
+    setdisplaybmi("")
   const p = new Promise((resolve,reject)=>{
     if(update===false){
       resolve(currentuser)
@@ -149,6 +159,7 @@ selectuser.bpandbmi.map(bpm=>{
   setdisplaybp(bpm.bp)
   setdisplayheight(bpm.height)
   setdisplayweight(bpm.weight)
+  setdisplaybmi(bpm.bmi)
 })
 }
 
@@ -165,6 +176,10 @@ setBpmmodal(true)
 }else if(role === "blood"){
 setbloodmodal(true)
 }else if(role === "remarks"){
+  setsupermodal(false)
+  seteyecaremodal(false)
+  setBpmmodal(false)
+  setbloodmodal(false)
   setremarksmodal(true)
 }
 }
@@ -207,7 +222,7 @@ setsnackmessage("make sure to enter inputs")
 const HandleBpm = ()=>{
   if(role === "bpandbmi" || role ==="super"){
   setloading("block")
-if(bp == "" && weight === "" && hr && height === ""){
+if(bp == "" && weight === "" && hr && height === "" && bmi === ""){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 setloading("none")
@@ -218,7 +233,8 @@ setloading("none")
     bp:bp,
     hr:hr,
     weight:weight,
-    height:height
+    height:height,
+    bmi:bmi
   },
   {
     headers: {
@@ -363,642 +379,663 @@ const action = (
     </IconButton>
   </React.Fragment>
 );
-    return ( 
-        <section>
-          <div className="padding-bottom-100">
-            <Navbar />
+return ( 
+<section>
+<div className="padding-bottom-100">
+  <Navbar />
+</div>
+<Snackbar
+open={snackbar}
+autoHideDuration={6000}
+message={snackmessage}
+action={action}
+/>
+  <Online />
+  {
+      data != [] &&
+      
+<div>
+  <div className='h4 container padding-top-20 padding-bottom-20'>
+      Welcome {email}
+      <div className="section opacity-4">
+        {role}
+      </div>
+  </div>
+  <div>
+
+  </div>
+</div>
+
+  }
+
+<div className="section container">
+  <div className="row-flex space-between">
+    <div className="padding">
+    <TextField
+        label="Search with staff Id"
+        variant="outlined"
+        onChange={(e)=>setsearch(e.target.value)}
+        />
+
+    </div>
+    <div className="padding">
+    <div className="h4">
+            {total} Registrations
           </div>
-   <Snackbar
-        open={snackbar}
-        autoHideDuration={6000}
-        message={snackmessage}
-        action={action}
-      />
-            <Online />
-            {
-                data != [] &&
-                
+    </div>
+  </div>
+   
+   
+</div>
+
+  <div className="container horizontal-scroll">
+  <table className="table stripped text-small">
+      <th>Staff Id</th>
+      <th>
+        <div style={{display:`${showsuper}`}}>
+        Fullname
+        </div>
+      </th>
+      <th>Bmc</th>
+      <th>Action</th>
+      <th>
+      <div style={{display:`${showsuper}`}}>
+        Print
+        </div>
+      </th>
+      <tbody>
+      
+        {
+            staff.filter(staffdata=>{
+              if(search === ""){
+                return staff
+              }else if(search.toString().includes(staffdata.staffId.toString())){
+                return staffdata
+              }
+            }).map(user=>(
+              <tr key={user._id}>
+              <td>
+                  {user.staffId}
+              </td>
+              <td>
+                  <div style={{display:`${showsuper}`}}>
+                  {user.fullName}
+                  </div>
+              </td>
+              <td>
+                  {user.bmc}
+              </td>
+              <td>
+                  <Button color="success" variant="outlined" startIcon={<CreateOutlinedIcon />} onClick={()=>HandleEdit(user)}>
+                      Edit
+                  </Button>
+              </td>
+              <td>
+              <div style={{display:`${showsuper}`}}>
+              <Button variant="outlined" startIcon={<LocalPrintshopOutlinedIcon/>} onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
+                      Print
+              </Button>
+              </div>
+              
+              </td>
+              </tr>
+            ))
+        }
+      </tbody>
+  </table>
+<center style={{display:`${nullshow}`}}>
+Nothing to show
+</center>
+  </div>
+  <Dialog
+open={eyecaremodal}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+<DialogTitle id="alert-dialog-title">
+{"Eye Care."}
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+<div className="editmodal" >
+      <div className="form center">
+  
+          {
+            update === true &&
+            <div className="section padding">
+            <TextField
+            variant="outlined"
+            fullWidth
+            label="Staff Id"
+            defaultValue={Edituser.staffId}
+            disabled
+            />
+        </div>
+
+        }
+        {update === true &&
         <div>
-            <div className='openSans h4 container padding-top-40 padding-bottom-40'>
-                Welcome {email}
-                <div className="section opacity-4">
-                  {role}
+            <div className="section padding">
+          
+
+                <TextField
+                    id="outlined-select-currency-native"
+                    select
+                    label="Right Eye"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    fullWidth
+                    defaultValue={displayrighteye}
+                    onChange={(e)=>setrighteye(e.target.value)}
+                  >
+                    <option value=""> </option>
+                    <option value="6/12">6/12</option>
+                    <option value="6/18">6/18</option>
+                    <option value="6/24">6/24</option>
+                    <option value="6/36">6/36</option>
+                    <option value="6/6">6/6</option>
+                    <option value="6/60">6/60</option>
+                    <option value="6/9">6/9</option>
+                    <option value="CF1M">CF1M</option>
+                    <option value="CF2M">CF2M</option>
+                    <option value="CF3M">CF3M</option>
+                    <option value="CF4M">CF4M</option>
+                    <option value="CF5M">CF5M</option>
+                    <option value="NPL">NPL</option>
+                    <option value="PL">PL</option>
+           
+              </TextField>
+          
+      </div>
+      <div className="section padding">
+    
+                      <TextField
+                    id="outlined-select-currency-native"
+                    select
+                    label="Left Eye"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    fullWidth
+                    defaultValue={displaylefteye}
+                    onChange={(e)=>setlefteye(e.target.value)}
+                  >
+                    <option value=""> </option>
+                    <option value="6/12">6/12</option>
+                    <option value="6/18">6/18</option>
+                    <option value="6/24">6/24</option>
+                    <option value="6/36">6/36</option>
+                    <option value="6/6">6/6</option>
+                    <option value="6/60">6/60</option>
+                    <option value="6/9">6/9</option>
+                    <option value="CF1M">CF1M</option>
+                    <option value="CF2M">CF2M</option>
+                    <option value="CF3M">CF3M</option>
+                    <option value="CF4M">CF4M</option>
+                    <option value="CF5M">CF5M</option>
+                    <option value="NPL">NPL</option>
+                    <option value="PL">PL</option>
+              </TextField>
+      </div>
+        </div>
+
+      }
+          <div>
+          <center style={{display:`${loading}`}}>
+                  <div className="loaderbox">
+                <div className="loadercontainer">
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
                 </div>
-            </div>
+              </div>
+              </center>
+          </div>
+          <div className="section padding">
+          <Button variant="contained" color='primary' className="capitalized" onClick={HandleEyeCare}>
+              Submit
+          </Button>
+          </div>
+      </div>
+  </div>
+</DialogContentText>
+</DialogContent>
+<DialogActions>
+{/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
+<Button onClick={()=>seteyecaremodal(false)} color="error" autoFocus>
+  Cancel
+</Button>
+</DialogActions>
+</Dialog>
+  <Dialog
+open={remarksmodal}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+<DialogTitle id="alert-dialog-title">
+{"Remarks"}
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+<div className="editmodal" >
+      <div className="form center">
+  
+          {
+            update === true &&
             <div>
+          <div className="section padding">
+            <TextField
+            variant="outlined"
+            fullWidth
+            label="Staff Id"
+            defaultValue={Edituser.staffId}
+            disabled
+            />
+        </div>
     
             </div>
-        </div>
 
-            }
-
-        <div className="section container">
-                  <TextField
-                  label="Search with id"
-                  variant="outlined"
-                  onChange={(e)=>setsearch(e.target.value)}
-                  />
-        </div>
-
-            <div className="container horizontal-scroll">
-            <table className="table stripped text-small">
-                <th>Staff Id</th>
-                <th>
-                  <div style={{display:`${showsuper}`}}>
-                  Fullname
-                  </div>
-                </th>
-                <th>Bmc</th>
-                <th>Action</th>
-                <th>
-                <div style={{display:`${showsuper}`}}>
-                  Print
-                  </div>
-                </th>
-                <tbody>
-                
-                  {
-                      staff.filter(staffdata=>{
-                        if(search === ""){
-                          return staff
-                        }else if(search.toString().includes(staffdata.staffId.toString())){
-                          return staffdata
-                        }
-                      }).map(user=>(
-                        <tr key={user._id}>
-                        <td>
-                            {user.staffId}
-                        </td>
-                        <td>
-                           <div style={{display:`${showsuper}`}}>
-                           {user.fullName}
-                           </div>
-                        </td>
-                        <td>
-                            {user.bmc}
-                        </td>
-                        <td>
-                            <Button color="success" variant="outlined" startIcon={<CreateOutlinedIcon />} onClick={()=>HandleEdit(user)}>
-                                Edit
-                            </Button>
-                        </td>
-                        <td>
-                        <div style={{display:`${showsuper}`}}>
-                        <Button variant="outlined" startIcon={<LocalPrintshopOutlinedIcon/>} onClick={()=>window.location.assign(`/remarks/${user._id}`)}>
-                                Print
-                        </Button>
-                        </div>
-                        
-                        </td>
-                        </tr>
-                      ))
-                  }
-                </tbody>
-            </table>
-    <center style={{display:`${nullshow}`}}>
-      Nothing to show
-    </center>
-            </div>
-            <Dialog
-        open={eyecaremodal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Eye Care."}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          <div className="editmodal" >
-                <div className="form center">
-            
-                    {
-                      update === true &&
-                      <div className="section padding">
-                      <TextField
-                      variant="outlined"
-                      fullWidth
-                      label="Id"
-                      defaultValue={Edituser.staffId}
-                      disabled
-                      />
-                  </div>
-
-                  }
-                  {update === true &&
-                  <div>
-                      <div className="section padding">
-                    
-        
-                         <TextField
-                              id="outlined-select-currency-native"
-                              select
-                              label="Right Eye"
-                              SelectProps={{
-                                native: true,
-                              }}
-                              fullWidth
-                              defaultValue={displayrighteye}
-                              onChange={(e)=>setrighteye(e.target.value)}
-                            >
-                              <option value=""> </option>
-                              <option value="6/12">6/12</option>
-                              <option value="6/18">6/18</option>
-                              <option value="6/24">6/24</option>
-                              <option value="6/36">6/36</option>
-                              <option value="6/6">6/6</option>
-                              <option value="6/60">6/60</option>
-                              <option value="6/9">6/9</option>
-                              <option value="CF1M">CF1M</option>
-                              <option value="CF2M">CF2M</option>
-                              <option value="CF3M">CF3M</option>
-                              <option value="CF4M">CF4M</option>
-                              <option value="CF5M">CF5M</option>
-                              <option value="NPL">NPL</option>
-                              <option value="PL">PL</option>
-                              <option value="Blanks">BLANKS</option>
-                       </TextField>
-                    
-                </div>
-                <div className="section padding">
-             
-                               <TextField
-                              id="outlined-select-currency-native"
-                              select
-                              label="Left Eye"
-                              SelectProps={{
-                                native: true,
-                              }}
-                              fullWidth
-                              defaultValue={displaylefteye}
-                              onChange={(e)=>setlefteye(e.target.value)}
-                            >
-                              <option value=""> </option>
-                              <option value="6/12">6/12</option>
-                              <option value="6/18">6/18</option>
-                              <option value="6/24">6/24</option>
-                              <option value="6/36">6/36</option>
-                              <option value="6/6">6/6</option>
-                              <option value="6/60">6/60</option>
-                              <option value="6/9">6/9</option>
-                              <option value="CF1M">CF1M</option>
-                              <option value="CF2M">CF2M</option>
-                              <option value="CF3M">CF3M</option>
-                              <option value="CF4M">CF4M</option>
-                              <option value="CF5M">CF5M</option>
-                              <option value="NPL">NPL</option>
-                              <option value="PL">PL</option>
-                              <option value="Blanks">BLANKS</option>
-                       </TextField>
-                </div>
-                  </div>
-
-                }
-                    <div>
-                    <center style={{display:`${loading}`}}>
-                            <div className="loaderbox">
-                         <div className="loadercontainer">
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                         </div>
-                       </div>
-                       </center>
-                    </div>
-                    <div className="section padding">
-                    <Button variant="contained" color='primary' className="capitalized" onClick={HandleEyeCare}>
-                        Submit
-                    </Button>
-                    </div>
-                </div>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
-          <Button onClick={()=>seteyecaremodal(false)} color="error" autoFocus>
-           Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-            <Dialog
-        open={remarksmodal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Remarks"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          <div className="editmodal" >
-                <div className="form center">
-            
-                    {
-                      update === true &&
-                      <div>
-                    <div className="section padding">
-                      <TextField
-                      variant="outlined"
-                      fullWidth
-                      label="Id"
-                      defaultValue={Edituser.staffId}
-                      disabled
-                      />
-                  </div>
-             
-                      </div>
-
-                  }
-                  { update === true &&
-                    <div>
-                          <div className="section padding h4">
-                           Eye Care
-                         </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Right Eye"
-                           defaultValue={displayrighteye}
-                           disabled
-                           />
-                       </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Right Eye"
-                           defaultValue={displaylefteye}
-                           disabled
-                           />
-                       </div>
-                    </div>
-                  }
-                  {    update === true &&
-                    <div>
-                          <div className="section padding h4">
-                           Blood
-                         </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Hepb"
-                           defaultValue={displayhepb}
-                           disabled
-                           />
-                       </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Hepc"
-                           defaultValue={displayhepc}
-                           disabled
-                           />
-                       </div>
-                    </div>
-                  }
-                  {     update === true &&
-                    <div>
-                          <div className="section padding h4">
-                          BPANDBMI
-                         </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Bp"
-                           defaultValue={displaybp}
-                           disabled
-                           />
-                       </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Height"
-                           defaultValue={displayheight}
-                           disabled
-                           />
-                       </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Hr"
-                           defaultValue={displayhr}
-                           disabled
-                           />
-                       </div>
-                         <div className="padding">
-                           <TextField
-                           variant="outlined"
-                           fullWidth
-                           label="Weight"
-                           defaultValue={displayweight}
-                           disabled
-                           />
-                       </div>
-                       <div className="section padding">
-                            <TextField
-                            variant="outlined"
-                            fullWidth
-                            label="Remarks"
-                            multiline
-                            rows={2}
-                            defaultValue={displayremarks}
-                            onChange={(e)=>setremarks(e.target.value)}
-                            />
-                          </div>
-                    </div>
-                           
-
-                  }
-                    
-        
-          
-                    <div>
-                    <center style={{display:`${loading}`}}>
-                            <div className="loaderbox">
-                         <div className="loadercontainer">
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                         </div>
-                       </div>
-                       </center>
-                    </div>
-                    <div className="section padding">
-                    <Button variant="contained" color='primary' className="capitalized" onClick={HandleRemarks}>
-                        Submit
-                    </Button>
-                    </div>
-                </div>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
-          <Button onClick={()=>setremarksmodal(false)} color="error" autoFocus>
-           Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-            <Dialog
-        open={Bpmmodal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"BPANDBMI."}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          <div className="editmodal" >
-                <div className="form center">
-                    {
-                      update === true &&
-                      <div className="section padding">
-                      <TextField
-                      variant="outlined"
-                      fullWidth
-                      label="Id"
-                      defaultValue={Edituser.staffId}
-                      disabled
-                      />
-                  </div>
-                  }
-
-                  {
-                    displayhepb != "" &&
-                    <div>
-                               <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Bp"
-                        defaultValue={displaybp}
-                        onChange={(e)=>setbp(e.target.value)}
-                        />
-                    </div>
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Hr"
-                        defaultValue={displayhr}
-                        onChange={(e)=>sethr(e.target.value)}
-                        />
-                    </div>
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Weight"
-                        defaultValue={displayweight}
-                        onChange={(e)=>setweight(e.target.value)}
-                        />
-                    </div>
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="Height"
-                        defaultValue={displayheight}
-                        onChange={(e)=>setheight(e.target.value)}
-                        />
-                    </div>
-                    </div>
-                  }
-           
-                    <div>
-                    <center style={{display:`${loading}`}}>
-                            <div className="loaderbox">
-                         <div className="loadercontainer">
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                         </div>
-                       </div>
-                       </center>
-                    </div>
-                    <div className="section padding">
-                    <Button variant="contained" color='primary' className="capitalized" onClick={HandleBpm}>
-                        Submit
-                    </Button>
-                    </div>
-                </div>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
-          <Button onClick={()=>setBpmmodal(false)} color="error" autoFocus>
-           Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-
-            <Dialog
-        open={bloodmodal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Blood"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          <div className="editmodal" >
-                <div className="form center">
-  
-                    
-                    {
-                      update === true &&
-                      <div className="section padding">
-                      <TextField
-                      variant="outlined"
-                      fullWidth
-                      label="Id"
-                      defaultValue={Edituser.staffId}
-                      disabled
-                      />
-                  </div>
-                    }
-
-                    {
-                      update === true &&
-                      <div>
-                    <div className="section padding">
-                        <TextField
-                        variant="outlined"
-                        fullWidth
-                        label="fbsrbs"
-                        onChange={(e)=>setfbsrbs(e.target.value)}
-                        defaultValue={displayfbsrbs}
-                        />
-                    </div>
-                    <div className="section padding">
-
-                                 <TextField
-          id="outlined-select-currency-native"
-          select
-          label="HEPATITIS B"
-          SelectProps={{
-            native: true,
-          }}
-          fullWidth
-          defaultValue={displayhepb}
-          onChange={(e)=>sethepb(e.target.value)}
-        >
-          <option value=""> </option>
-          <option value="Positive(+)">Positive(+)</option>
-          <option value="Negative(-)">Negative(-)</option>
-        </TextField>
-                    </div>
-                    <div className="section padding">
-                        <TextField
-                          id="outlined-select-currency-native"
-                          select
-                          label="HEPATITIS C"
-                          SelectProps={{
-                            native: true,
-                          }}
-                          fullWidth
-                          defaultValue={displayhepc}
-                          onChange={(e)=>sethepc(e.target.value)}
-                        >
-                          <option value=""> </option>
-                          <option value="Positive(+)">Positive(+)</option>
-                          <option value="Negative(-)">Negative(-)</option>
-                        </TextField>
-                    </div>
-                      </div>
-                    }
-                
-                    <div>
-                    <center style={{display:`${loading}`}}>
-                            <div className="loaderbox">
-                         <div className="loadercontainer">
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                           <span className="loadercircle"></span>
-                         </div>
-                       </div>
-                       </center>
-                    </div>
-                    <div className="section padding">
-                    <Button variant="contained" color='primary' className="capitalized" onClick={HandleBlood}>
-                        Submit
-                    </Button>
-                    </div>
-                </div>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
-          <Button onClick={()=>setbloodmodal(false)} color="error" autoFocus>
-           Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-
-
-
-            <Dialog
-        open={supermodal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        className="width-300-min"
-      >
-        <DialogTitle id="alert-dialog-title">
+        }
+        { update === true &&
           <div>
-            Super
+                <div className="section padding h4">
+                  Eye Care
+                </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Right Eye"
+                  defaultValue={displayrighteye}
+                  disabled
+                  />
+              </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Right Eye"
+                  defaultValue={displaylefteye}
+                  disabled
+                  />
+              </div>
           </div>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          <div className="">
-            <div className="section">
-              Super admin has control over all database
-            </div>
-            <div className="section">
-            <Button fullWidth variant="contained" onClick={EyeOpen}>Eye Care</Button>
-            </div>
-            <div className="section">
-            <Button fullWidth variant="contained" onClick={BloodOpen}>Blood</Button>
-            </div>
-            <div className="section">
-            <Button fullWidth variant="contained" onClick={BpmOpen}>BPANDBMI</Button>
-            </div>
-            <div className="section">
-            <Button fullWidth variant="contained" onClick={RemarksOpen}>Remarks</Button>
-            </div>
+        }
+        {    update === true &&
+          <div>
+                <div className="section padding h4">
+                  Blood
+                </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Hepb"
+                  defaultValue={displayhepb}
+                  disabled
+                  />
+              </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Hepc"
+                  defaultValue={displayhepc}
+                  disabled
+                  />
+              </div>
           </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
-          <Button onClick={()=>setsupermodal(false)} color="error" autoFocus>
-           Cancel
+        }
+        {     update === true &&
+          <div>
+                <div className="section padding h4">
+                BP / BMI
+                </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Bp"
+                  defaultValue={displaybp}
+                  disabled
+                  />
+              </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Height"
+                  defaultValue={displayheight}
+                  disabled
+                  />
+              </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Hr"
+                  defaultValue={displayhr}
+                  disabled
+                  />
+              </div>
+                <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Weight"
+                  defaultValue={displayweight}
+                  disabled
+                  />
+              </div>
+              <div className="section padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Remarks"
+                  multiline
+                  rows={2}
+                  defaultValue={displayremarks}
+                  onChange={(e)=>setremarks(e.target.value)}
+                  />
+                </div>
+          </div>
+                  
+
+        }
+          
+
+
+          <div>
+          <center style={{display:`${loading}`}}>
+                  <div className="loaderbox">
+                <div className="loadercontainer">
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                </div>
+              </div>
+              </center>
+          </div>
+          <div className="section padding">
+          <Button variant="contained" color='primary' className="capitalized" onClick={HandleRemarks}>
+              Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-        
-        <div>
-          <Footer />
+          </div>
+      </div>
+  </div>
+</DialogContentText>
+</DialogContent>
+<DialogActions>
+{/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
+<Button onClick={()=>setremarksmodal(false)} color="error" autoFocus>
+  Cancel
+</Button>
+</DialogActions>
+</Dialog>
+
+  <Dialog
+open={Bpmmodal}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+<DialogTitle id="alert-dialog-title">
+{"BP / BMI."}
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+<div className="editmodal" >
+      <div className="form center">
+          {
+            update === true &&
+            <div className="section padding">
+            <TextField
+            variant="outlined"
+            fullWidth
+            label="Staff Id"
+            defaultValue={Edituser.staffId}
+            disabled
+            />
         </div>
-        </section>
+        }
+
+        {
+          update === true &&
+          <div>
+                      <div className="section padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="Bp"
+              defaultValue={displaybp}
+              onChange={(e)=>setbp(e.target.value)}
+              />
+          </div>
+          <div className="section padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="Hr"
+              defaultValue={displayhr}
+              onChange={(e)=>sethr(e.target.value)}
+              />
+          </div>
+          <div className="section padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="Weight"
+              defaultValue={displayweight}
+              onChange={(e)=>setweight(e.target.value)}
+              />
+          </div>
+          <div className="section padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="Height"
+              defaultValue={displayheight}
+              onChange={(e)=>setheight(e.target.value)}
+              />
+          </div>
+          <div className="section padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="BMI"
+              type="number"
+              defaultValue={displaybmi}
+              onChange={(e)=>setbmi(e.target.value)}
+              />
+          </div>
+          </div>
+        }
+  
+          <div>
+          <center style={{display:`${loading}`}}>
+                  <div className="loaderbox">
+                <div className="loadercontainer">
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                </div>
+              </div>
+              </center>
+          </div>
+          <div className="section padding">
+          <Button variant="contained" color='primary' className="capitalized" onClick={HandleBpm}>
+              Submit
+          </Button>
+          </div>
+      </div>
+  </div>
+</DialogContentText>
+</DialogContent>
+<DialogActions>
+{/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
+<Button onClick={()=>setBpmmodal(false)} color="error" autoFocus>
+  Cancel
+</Button>
+</DialogActions>
+</Dialog>
+
+
+  <Dialog
+open={bloodmodal}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+<DialogTitle id="alert-dialog-title">
+{"Blood"}
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+<div className="editmodal" >
+      <div className="form center">
+
+          
+          {
+            update === true &&
+            <div className="section padding">
+            <TextField
+            variant="outlined"
+            fullWidth
+            label="Staff Id"
+            defaultValue={Edituser.staffId}
+            disabled
+            />
+        </div>
+          }
+
+          {
+            update === true &&
+            <div>
+          <div className="section padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="fbsrbs"
+              onChange={(e)=>setfbsrbs(e.target.value)}
+              defaultValue={displayfbsrbs}
+              />
+          </div>
+          <div className="section padding">
+
+                        <TextField
+id="outlined-select-currency-native"
+select
+label="HEPATITIS B"
+SelectProps={{
+  native: true,
+}}
+fullWidth
+defaultValue={displayhepb}
+onChange={(e)=>sethepb(e.target.value)}
+>
+<option value=""> </option>
+<option value="Positive(+)">Positive(+)</option>
+<option value="Negative(-)">Negative(-)</option>
+</TextField>
+          </div>
+          <div className="section padding">
+              <TextField
+                id="outlined-select-currency-native"
+                select
+                label="HEPATITIS C"
+                SelectProps={{
+                  native: true,
+                }}
+                fullWidth
+                defaultValue={displayhepc}
+                onChange={(e)=>sethepc(e.target.value)}
+              >
+                <option value=""> </option>
+                <option value="Positive(+)">Positive(+)</option>
+                <option value="Negative(-)">Negative(-)</option>
+              </TextField>
+          </div>
+            </div>
+          }
+      
+          <div>
+          <center style={{display:`${loading}`}}>
+                  <div className="loaderbox">
+                <div className="loadercontainer">
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                  <span className="loadercircle"></span>
+                </div>
+              </div>
+              </center>
+          </div>
+          <div className="section padding">
+          <Button variant="contained" color='primary' className="capitalized" onClick={HandleBlood}>
+              Submit
+          </Button>
+          </div>
+      </div>
+  </div>
+</DialogContentText>
+</DialogContent>
+<DialogActions>
+{/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
+<Button onClick={()=>setbloodmodal(false)} color="error" autoFocus>
+  Cancel
+</Button>
+</DialogActions>
+</Dialog>
+
+
+
+
+  <Dialog
+open={supermodal}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+className="width-300-min"
+>
+<DialogTitle id="alert-dialog-title">
+<div>
+  Super
+</div>
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+<div className="">
+  <div className="section">
+    Super admin has control over all database
+  </div>
+  <div className="section">
+  <Button fullWidth variant="contained" onClick={EyeOpen}>Eye Care</Button>
+  </div>
+  <div className="section">
+  <Button fullWidth variant="contained" onClick={BloodOpen}>Blood</Button>
+  </div>
+  <div className="section">
+  <Button fullWidth variant="contained" onClick={BpmOpen}>BPANDBMI</Button>
+  </div>
+  <div className="section">
+  <Button fullWidth variant="contained" onClick={RemarksOpen}>Remarks</Button>
+  </div>
+</div>
+</DialogContentText>
+</DialogContent>
+<DialogActions>
+{/* <Button onClick={()=>setmodal(false)}>Close</Button> */}
+<Button onClick={()=>setsupermodal(false)} color="error" autoFocus>
+  Cancel
+</Button>
+</DialogActions>
+</Dialog>
+
+<div>
+<Footer />
+</div>
+</section>
      );
 }
  

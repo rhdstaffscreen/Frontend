@@ -33,11 +33,15 @@ const Remarks = () => {
     const [bp, setbp] = useState("");
     const [fullname, setfullname] = useState("");
     const [dremarks, setdremarks] = useState("");
+    const [bmi, setbmi] = useState("")
+    const [fbsrbs, setfbsrbs] = useState("");
     useEffect(() => {
         if(sessionStorage.getItem("data") != undefined){
             const user = JSON.parse(sessionStorage.getItem("data"))
             setdata(user)
-            
+            if(user.login.role != "super"){
+                window.location.assign("/screen")
+            }
             }
         },[]);
     useEffect(() => {
@@ -48,12 +52,14 @@ const Remarks = () => {
             }
          }  
         ).then((userdata)=>{
+          
             setfullname(userdata.fullName)
             setdisplay(userdata.data.staff)
             console.log(userdata)
             userdata.data.staff.blood.map(blood=>{
                 sethepb(blood.hepb)
                 sethepc(blood.hepc)
+                setfbsrbs(blood.fbsrbs)
             })
             
             userdata.data.staff.eyescreen.map(eye=>{
@@ -66,6 +72,7 @@ const Remarks = () => {
               setbp(bpm.bp)
               setheight(bpm.height)
               setweight(bpm.weight)
+              setbmi(bpm.bmi)
             })
             setdremarks(userdata.data.staff.remarks)
             // .map(remark=>{
@@ -99,28 +106,37 @@ const Remarks = () => {
                     Print Results
                 </Button>
             </div>
-            <div className="center width-800-max border">
-            <div className="center text-center padding">
+            <div className="center width-700-max border results">
+                <div className="row">
+                    <div className="col sm-12 md-4 lg-4 padding">
+                    <div className="text-center">
             <img src="/img/ghs.jpg" className="height-100" alt="" />
             </div>
-            <div  className="center text-center padding">
-                <div className="h6">
-                    GHANA HEALTH SERVICE RHD STAFF SCREENING RESULTS <br />
                     </div>
-            </div>
+                    <div className="col sm-12 md-8 lg-8 padding">
+                        <div className="h3 text bold">
+                        GHANA HEALTH SERVICE 
+                        </div>
+                    <div className="h6 section">
+                    RHD STAFF SCREENING RESULTS <br />
+                    </div>
+                    </div>
+                </div>
+       
+      
          
 
             <div>
-                <div className="padding h6 top-border">PERSONAL INFORMATION</div>
+                <div className="padding h6 top-border text-bold text-indigo">PERSONAL INFORMATION</div>
                 <div className="">
                     <div className="padding row-flex">
-                        <div>Full Name: </div>
+                        <div className="text-bold padding-right-10">Full Name: </div>
                         <div className="opacity-3">
                         {display.fullName}
                         </div>
                     </div>
                     <div className="padding row-flex">
-                        <div>Id: </div>
+                        <div className="text-bold padding-right-10">Staff Id: </div>
                         <div className="opacity-3">
                         {display.staffId}
                         </div>
@@ -128,11 +144,11 @@ const Remarks = () => {
                 </div>
             </div>
             <div>
-                <div className="padding h6 top-border">EYE CARE</div>
+                <div className="padding h6 top-border text-bold text-indigo">EYE CARE</div>
                 <div className="row light ">
                     <div className="col sm-12 md-6 lg-6 padding">
                     <div className="row-flex">
-                    <div>Right Eye: </div>
+                    <div className="text-bold padding-right-10">Right Eye: </div>
                         <div className="opacity-3">
                             {righteye}
                         </div>
@@ -140,7 +156,7 @@ const Remarks = () => {
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
                       <div className="row-flex">
-                      <div>Left Eye: </div>
+                      <div className="text-bold padding-right-10">Left Eye: </div>
                         <div className="opacity-3">
                             {lefteye}
                         </div>
@@ -149,11 +165,11 @@ const Remarks = () => {
                 </div>
             </div>
             <div>
-                <div className="padding h6 top-border">Blood</div>
+                <div className="padding h6 top-border text-bold text-indigo">Blood</div>
                 <div className="row light ">
                     <div className="col sm-12 md-6 lg-6 padding">
                    <div className="row-flex">
-                   <div>HepB: </div>
+                   <div className="text-bold padding-right-10">HepB: </div>
                         <div className="opacity-3">
                             {hepb}
                         </div>
@@ -161,20 +177,28 @@ const Remarks = () => {
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
                      <div className="row-flex">
-                     <div>HepC: </div>
+                     <div className="text-bold padding-right-10">HepC: </div>
                         <div className="opacity-3">
                             {hepc}
+                        </div>
+                     </div>
+                    </div>
+                    <div className="col sm-12 md-6 lg-6 padding">
+                     <div className="row-flex">
+                     <div className="text-bold padding-right-10">FBSRBS: </div>
+                        <div className="opacity-3">
+                            {fbsrbs}
                         </div>
                      </div>
                     </div>
                 </div>
             </div>
             <div>
-                <div className="padding h6 top-border">BPANDBMI</div>
+                <div className="padding h6 top-border text-bold text-indigo">BP / BMI</div>
                 <div className="row light ">
                     <div className="col sm-12 md-6 lg-6 padding">
                         <div className="row-flex">
-                        <div>Bp: </div>
+                        <div className="text-bold padding-right-10">Bp: </div>
                         <div className="opacity-3">
                             {bp}
                         </div>
@@ -182,7 +206,7 @@ const Remarks = () => {
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
                       <div className="row-flex">
-                      <div>Height: </div>
+                      <div className="text-bold padding-right-10">Height: </div>
                         <div className="opacity-3">
                            {height}
                         </div>
@@ -190,7 +214,7 @@ const Remarks = () => {
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
                        <div className="row-flex">
-                       <div>Hr: </div>
+                       <div className="text-bold padding-right-10">Hr: </div>
                         <div className="opacity-3">
                             {hr}
                         </div>
@@ -198,16 +222,24 @@ const Remarks = () => {
                     </div>
                     <div className="col sm-12 md-6 lg-6 padding">
                        <div className="row-flex">
-                       <div>Weight: </div>
+                       <div className="text-bold padding-right-10">Weight: </div>
                         <div className="opacity-3">
                             {weight}
+                        </div>
+                       </div>
+                    </div>
+                    <div className="col sm-12 md-6 lg-6 padding">
+                       <div className="row-flex">
+                       <div className="text-bold padding-right-10">BMI: </div>
+                        <div className="opacity-3">
+                            {bmi}
                         </div>
                        </div>
                     </div>
                 </div>
             </div>
             <div>
-                <div className="padding h6 top-border">REMARKS</div>
+                <div className="padding h6 top-border text-bold text-indigo">REMARKS</div>
                 <div className="light ">
                     <div className="padding">
                         <div className="opacity-3">
