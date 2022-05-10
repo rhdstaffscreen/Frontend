@@ -5,7 +5,7 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import ReactPDF from '@react-pdf/renderer';
 import { Button } from "@mui/material";
-const Endpoint = "http://rhdscreen-api.herokuapp.com"
+const Endpoint = "https://rhdscreen-api.herokuapp.com"
 const Remarks = () => {
     const styles = StyleSheet.create({
         page: {
