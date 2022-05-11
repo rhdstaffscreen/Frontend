@@ -194,7 +194,6 @@ const HandleLogin = ()=>{
                       native: true,
                     }}
                     fullWidth
-                    defaultValue={displaylefteye}
                     onChange={(e)=>setsex(e.target.value)}
                   >
                     <option value=""> </option>
