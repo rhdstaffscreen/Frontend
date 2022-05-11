@@ -116,6 +116,7 @@ Axios.get(Endpoint + "/staff/showall" ,  {
 const [Edituser, setEdituser] = useState([]);
 const [update, setupdate] = useState(false);
 const HandleEdit = (currentuser)=>{
+  setupdate(false)
   setdisplayhepb("")
   setdisplayhepc("")
   setdisplaylefteye("")
@@ -127,69 +128,125 @@ const HandleEdit = (currentuser)=>{
   setdisplayfbsrbs("")
   setdisplayremarks("")
   setdisplaybmi("")
-  const p = new Promise((resolve,reject)=>{
-    if(update === false){
-      resolve(currentuser)
-    }else if(update === true){
-      setupdate(false)
-      resolve(currentuser)
-    }
-  })
+  if(update === false){
 
-  p.then(selectuser=>{
-    setEdituser(selectuser)
-    console.log(selectuser)
-   
-     if(selectuser.blood != []){
-      selectuser.blood.map(blood=>{
-        setdisplayhepb(blood.hepb)
-        setdisplayhepc(blood.hepc)
-        setdisplayfbsrbs(blood.fbsrbs)
-        setupdate(true)
-    })
-     }else{
-      setupdate(true)
-     }
-     if(selectuser.eyescreen != []){
-selectuser.eyescreen.map(eye=>{
-  setdisplaylefteye(eye.lefteye)
-  setdisplayrighteye(eye.righteye)
-  setupdate(true)
-})
-     }else{
-      setupdate(true)
-     }
-if(selectuser.bpandbmi != []){
-selectuser.bpandbmi.map(bpm=>{
-  setdisplayhr(bpm.hr)
-  setdisplaybp(bpm.bp)
-  setdisplayheight(bpm.height)
-  setdisplayweight(bpm.weight)
-  setdisplaybmi(bpm.bmi)
-  setupdate(true)
-})
-}else{
-  setupdate(true)
- }
 
-setdisplayremarks(selectuser.remarks)
 
-  })
+
+setdisplayremarks(currentuser.remarks)
+  }
+
+  // const p = new Promise((resolve,reject)=>{
+  //   if(update === false){
+  //     resolve(currentuser)
+  //   }else if(update === true){
+  //     setupdate(false)
+  //     resolve(currentuser)
+  //   }
+  // })
+
+  // p.then(selectuser=>{
+  //   setEdituser(selectuser)
+  //   console.log(selectuser)
+
+
+  // })
 
 if(role === "super"){
     setsupermodal(true)
+    currentuser.eyescreen.map(eye=>{
+      setdisplaylefteye(eye.lefteye)
+      setdisplayrighteye(eye.righteye)
+      setupdate(true)
+      console.log("empty")
+    })
+    currentuser.blood.map(blood=>{
+      // setdisplayhepb(blood.hepb)
+      // setdisplayhepc(blood.hepc)
+      setdisplayfbsrbs(blood.fbsrbs)
+      setupdate(true)
+      console.log("not empty")
+  })
+  currentuser.bpandbmi.map(bpm=>{
+    // setdisplayhr(bpm.hr)
+    setdisplaybp(bpm.bp)
+    setdisplayheight(bpm.height)
+    setdisplayweight(bpm.weight)
+    setdisplaybmi(bpm.bmi)
+    setupdate(true)
+  })
 }else if(role === "eyecare"){
   seteyecaremodal(true)
+  if(currentuser.eyescreen != []){
+    currentuser.eyescreen.map(eye=>{
+      setdisplaylefteye(eye.lefteye)
+      setdisplayrighteye(eye.righteye)
+      setupdate(true)
+      console.log("empty")
+    })
+
+         }else{
+          setupdate(true)
+          console.log("not empty")
+         }
 }else if(role =="bpandbmi"){
 setBpmmodal(true)
+
+if(currentuser.bpandbmi != []){
+  currentuser.bpandbmi.map(bpm=>{
+    // setdisplayhr(bpm.hr)
+    setdisplaybp(bpm.bp)
+    setdisplayheight(bpm.height)
+    setdisplayweight(bpm.weight)
+    setdisplaybmi(bpm.bmi)
+    setupdate(true)
+  })
+  }else{
+    setupdate(true)
+   }
 }else if(role === "blood"){
 setbloodmodal(true)
+if(currentuser.blood === []){
+  setupdate(true)
+  console.log("empty")
+ }else{
+
+  currentuser.blood.map(blood=>{
+    // setdisplayhepb(blood.hepb)
+    // setdisplayhepc(blood.hepc)
+    setdisplayfbsrbs(blood.fbsrbs)
+    setupdate(true)
+    console.log("not empty")
+})
+ }
 }else if(role === "remarks"){
   setsupermodal(false)
   seteyecaremodal(false)
   setBpmmodal(false)
   setbloodmodal(false)
   setremarksmodal(true)
+
+  currentuser.eyescreen.map(eye=>{
+    setdisplaylefteye(eye.lefteye)
+    setdisplayrighteye(eye.righteye)
+    setupdate(true)
+    console.log("empty")
+  })
+  currentuser.blood.map(blood=>{
+    // setdisplayhepb(blood.hepb)
+    // setdisplayhepc(blood.hepc)
+    setdisplayfbsrbs(blood.fbsrbs)
+    setupdate(true)
+    console.log("not empty")
+})
+currentuser.bpandbmi.map(bpm=>{
+  // setdisplayhr(bpm.hr)
+  setdisplaybp(bpm.bp)
+  setdisplayheight(bpm.height)
+  setdisplayweight(bpm.weight)
+  setdisplaybmi(bpm.bmi)
+  setupdate(true)
+})
 }
 }
 
@@ -524,74 +581,137 @@ aria-describedby="alert-dialog-description"
         </div>
 
         }
-        {update === true &&
+     
         <div>
             <div className="section padding">
-          
-
-                <TextField
-                    id="outlined-select-currency-native"
-                    select
-                    label="Right Eye"
-                    SelectProps={{
-                      native: true,
-                    }}
-                    fullWidth
-                    defaultValue={displayrighteye}
-                    onChange={(e)=>setrighteye(e.target.value)}
-                  >
-                    <option value=""> </option>
-                    <option value="6/12">6/12</option>
-                    <option value="6/18">6/18</option>
-                    <option value="6/24">6/24</option>
-                    <option value="6/36">6/36</option>
-                    <option value="6/6">6/6</option>
-                    <option value="6/60">6/60</option>
-                    <option value="6/9">6/9</option>
-                    <option value="CF1M">CF1M</option>
-                    <option value="CF2M">CF2M</option>
-                    <option value="CF3M">CF3M</option>
-                    <option value="CF4M">CF4M</option>
-                    <option value="CF5M">CF5M</option>
-                    <option value="NPL">NPL</option>
-                    <option value="PL">PL</option>
-           
-              </TextField>
-          
-      </div>
+              {
+              displayrighteye === "" &&
+                     <TextField
+                     id="outlined-select-currency-native"
+                     select
+                     label="Right Eye"
+                     SelectProps={{
+                       native: true,
+                     }}
+                     fullWidth
+                     defaultValue={displayrighteye}
+                     onChange={(e)=>setrighteye(e.target.value)}
+                   >
+                     <option value=""> </option>
+                     <option value="6/12">6/12</option>
+                     <option value="6/18">6/18</option>
+                     <option value="6/24">6/24</option>
+                     <option value="6/36">6/36</option>
+                     <option value="6/6">6/6</option>
+                     <option value="6/60">6/60</option>
+                     <option value="6/9">6/9</option>
+                     <option value="CF1M">CF1M</option>
+                     <option value="CF2M">CF2M</option>
+                     <option value="CF3M">CF3M</option>
+                     <option value="CF4M">CF4M</option>
+                     <option value="CF5M">CF5M</option>
+                     <option value="NPL">NPL</option>
+                     <option value="PL">PL</option>
+            
+               </TextField>
+              }
+              {
+              displayrighteye != "" &&
+                     <TextField
+                     id="outlined-select-currency-native"
+                     select
+                     label="Right Eye"
+                     SelectProps={{
+                       native: true,
+                     }}
+                     fullWidth
+                     defaultValue={displayrighteye}
+                     onChange={(e)=>setrighteye(e.target.value)}
+                   >
+                     <option value=""> </option>
+                     <option value="6/12">6/12</option>
+                     <option value="6/18">6/18</option>
+                     <option value="6/24">6/24</option>
+                     <option value="6/36">6/36</option>
+                     <option value="6/6">6/6</option>
+                     <option value="6/60">6/60</option>
+                     <option value="6/9">6/9</option>
+                     <option value="CF1M">CF1M</option>
+                     <option value="CF2M">CF2M</option>
+                     <option value="CF3M">CF3M</option>
+                     <option value="CF4M">CF4M</option>
+                     <option value="CF5M">CF5M</option>
+                     <option value="NPL">NPL</option>
+                     <option value="PL">PL</option>
+            
+               </TextField>
+              }
+            </div>
       <div className="section padding">
-    
-                      <TextField
-                    id="outlined-select-currency-native"
-                    select
-                    label="Left Eye"
-                    SelectProps={{
-                      native: true,
-                    }}
-                    fullWidth
-                    defaultValue={displaylefteye}
-                    onChange={(e)=>setlefteye(e.target.value)}
-                  >
-                    <option value=""> </option>
-                    <option value="6/12">6/12</option>
-                    <option value="6/18">6/18</option>
-                    <option value="6/24">6/24</option>
-                    <option value="6/36">6/36</option>
-                    <option value="6/6">6/6</option>
-                    <option value="6/60">6/60</option>
-                    <option value="6/9">6/9</option>
-                    <option value="CF1M">CF1M</option>
-                    <option value="CF2M">CF2M</option>
-                    <option value="CF3M">CF3M</option>
-                    <option value="CF4M">CF4M</option>
-                    <option value="CF5M">CF5M</option>
-                    <option value="NPL">NPL</option>
-                    <option value="PL">PL</option>
-              </TextField>
+        {
+          displaylefteye === "" &&
+          <TextField
+          id="outlined-select-currency-native"
+          select
+          label="Left Eye"
+          SelectProps={{
+            native: true,
+          }}
+          fullWidth
+          defaultValue={displaylefteye}
+          onChange={(e)=>setlefteye(e.target.value)}
+        >
+          <option value=""> </option>
+          <option value="6/12">6/12</option>
+          <option value="6/18">6/18</option>
+          <option value="6/24">6/24</option>
+          <option value="6/36">6/36</option>
+          <option value="6/6">6/6</option>
+          <option value="6/60">6/60</option>
+          <option value="6/9">6/9</option>
+          <option value="CF1M">CF1M</option>
+          <option value="CF2M">CF2M</option>
+          <option value="CF3M">CF3M</option>
+          <option value="CF4M">CF4M</option>
+          <option value="CF5M">CF5M</option>
+          <option value="NPL">NPL</option>
+          <option value="PL">PL</option>
+    </TextField>
+        }
+        {
+          displaylefteye != "" &&
+          <TextField
+          id="outlined-select-currency-native"
+          select
+          label="Left Eye"
+          SelectProps={{
+            native: true,
+          }}
+          fullWidth
+          defaultValue={displaylefteye}
+          onChange={(e)=>setlefteye(e.target.value)}
+        >
+          <option value=""> </option>
+          <option value="6/12">6/12</option>
+          <option value="6/18">6/18</option>
+          <option value="6/24">6/24</option>
+          <option value="6/36">6/36</option>
+          <option value="6/6">6/6</option>
+          <option value="6/60">6/60</option>
+          <option value="6/9">6/9</option>
+          <option value="CF1M">CF1M</option>
+          <option value="CF2M">CF2M</option>
+          <option value="CF3M">CF3M</option>
+          <option value="CF4M">CF4M</option>
+          <option value="CF5M">CF5M</option>
+          <option value="NPL">NPL</option>
+          <option value="PL">PL</option>
+    </TextField>
+        }
       </div>
         </div>
 
-      }
+
           <div>
           <center style={{display:`${loading}`}}>
                   <div className="loaderbox">
@@ -649,12 +769,14 @@ aria-describedby="alert-dialog-description"
             </div>
 
         }
-        { update === true &&
+   
           <div>
                 <div className="section padding h4">
                   Eye Care
                 </div>
-                <div className="padding">
+                {
+                  displayrighteye === "" &&
+                  <div className="padding">
                   <TextField
                   variant="outlined"
                   fullWidth
@@ -663,17 +785,45 @@ aria-describedby="alert-dialog-description"
                   disabled
                   />
               </div>
-                <div className="padding">
+                }
+                {
+                  displayrighteye != "" &&
+                  <div className="padding">
                   <TextField
                   variant="outlined"
                   fullWidth
                   label="Right Eye"
-                  defaultValue={displaylefteye}
+                  defaultValue={displayrighteye}
                   disabled
                   />
               </div>
+                }
+            {
+              displaylefteye === "" &&
+              <div className="padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="Right Eye"
+              defaultValue={displaylefteye}
+              disabled
+              />
           </div>
-        }
+            }
+            {
+              displaylefteye != "" &&
+              <div className="padding">
+              <TextField
+              variant="outlined"
+              fullWidth
+              label="Right Eye"
+              defaultValue={displaylefteye}
+              disabled
+              />
+          </div>
+            }
+          </div>
+   
         {    update === true &&
           <div>
                 {/* <div className="section padding h4">
@@ -699,12 +849,14 @@ aria-describedby="alert-dialog-description"
               </div> */}
           </div>
         }
-        {     update === true &&
+
           <div>
                 <div className="section padding h4">
                 BP / BMI
                 </div>
-                <div className="padding">
+                {
+                  displaybp === "" &&
+                  <div className="padding">
                   <TextField
                   variant="outlined"
                   fullWidth
@@ -713,15 +865,43 @@ aria-describedby="alert-dialog-description"
                   disabled
                   />
               </div>
-                <div className="padding">
+                }
+                {
+                  displaybp != "" &&
+                  <div className="padding">
                   <TextField
                   variant="outlined"
                   fullWidth
-                  label="Height"
-                  defaultValue={displayheight}
+                  label="Bp"
+                  defaultValue={displaybp}
                   disabled
                   />
               </div>
+                }
+             {
+               displayheight === "" &&
+               <div className="padding">
+               <TextField
+               variant="outlined"
+               fullWidth
+               label="Height"
+               defaultValue={displayheight}
+               disabled
+               />
+           </div>
+             }
+             {
+               displayheight != "" &&
+               <div className="padding">
+               <TextField
+               variant="outlined"
+               fullWidth
+               label="Height"
+               defaultValue={displayheight}
+               disabled
+               />
+           </div>
+             }
                 {/* <div className="padding">
                   <TextField
                   variant="outlined"
@@ -731,31 +911,60 @@ aria-describedby="alert-dialog-description"
                   disabled
                   />
               </div> */}
-                <div className="padding">
-                  <TextField
-                  variant="outlined"
-                  fullWidth
-                  label="Weight"
-                  defaultValue={displayweight}
-                  disabled
-                  />
-              </div>
-              <div className="section padding">
-                  <TextField
-                  variant="outlined"
-                  fullWidth
-                  label="Remarks"
-                  multiline
-                  rows={2}
-                  defaultValue={displayremarks}
-                  onChange={(e)=>setremarks(e.target.value)}
-                  />
-                </div>
+         {
+           displayweight === "" &&
+           <div className="padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="Weight"
+           defaultValue={displayweight}
+           disabled
+           />
+       </div>
+         }
+         {
+           displayweight != "" &&
+           <div className="padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="Weight"
+           defaultValue={displayweight}
+           disabled
+           />
+       </div>
+         }
+        {
+          displayremarks === "" &&
+          <div className="section padding">
+          <TextField
+          variant="outlined"
+          fullWidth
+          label="Remarks"
+          multiline
+          rows={2}
+          defaultValue={displayremarks}
+          onChange={(e)=>setremarks(e.target.value)}
+          />
+        </div>
+        }
+        {
+          displayremarks != "" &&
+          <div className="section padding">
+          <TextField
+          variant="outlined"
+          fullWidth
+          label="Remarks"
+          multiline
+          rows={2}
+          defaultValue={displayremarks}
+          onChange={(e)=>setremarks(e.target.value)}
+          />
+        </div>
+        }
           </div>
                   
-
-        }
-          
 
 
           <div>
@@ -815,10 +1024,10 @@ aria-describedby="alert-dialog-description"
         </div>
         }
 
-        {
-          update === true &&
           <div>
-                      <div className="section padding">
+            {
+              displaybp === "" &&
+              <div className="section padding">
               <TextField
               variant="outlined"
               fullWidth
@@ -826,46 +1035,107 @@ aria-describedby="alert-dialog-description"
               defaultValue={displaybp}
               onChange={(e)=>setbp(e.target.value)}
               />
-          </div>
-          {/* <div className="section padding">
+              </div>
+            }
+            {
+              displaybp != "" &&
+              <div className="section padding">
               <TextField
               variant="outlined"
               fullWidth
-              label="Hr"
-              defaultValue={displayhr}
-              onChange={(e)=>sethr(e.target.value)}
+              label="Bp"
+              defaultValue={displaybp}
+              onChange={(e)=>setbp(e.target.value)}
               />
-          </div> */}
-          <div className="section padding">
-              <TextField
-              variant="outlined"
-              fullWidth
-              label="Weight"
-              defaultValue={displayweight}
-              onChange={(e)=>setweight(e.target.value)}
-              />
+              </div>
+            }
+
+          {
+               displayheight === "" &&
+               <div className="padding">
+               <TextField
+               variant="outlined"
+               fullWidth
+               label="Height"
+               defaultValue={displayheight}
+               onChange={(e)=>setheight(e.target.value)}
+
+               />
+           </div>
+             }
+             {
+               displayheight != "" &&
+               <div className="padding">
+               <TextField
+               variant="outlined"
+               fullWidth
+               label="Height"
+               defaultValue={displayheight}
+               onChange={(e)=>setheight(e.target.value)}
+               />
+           </div>
+             }
+                {/* <div className="padding">
+                  <TextField
+                  variant="outlined"
+                  fullWidth
+                  label="Hr"
+                  defaultValue={displayhr}
+                  disabled
+                  />
+              </div> */}
+         {
+           displayweight === "" &&
+           <div className="padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="Weight"
+           defaultValue={displayweight}
+           onChange={(e)=>setweight(e.target.value)}
+           />
+       </div>
+         }
+         {
+           displayweight != "" &&
+           <div className="padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="Weight"
+           defaultValue={displayweight}
+           onChange={(e)=>setweight(e.target.value)}
+           />
+       </div>
+         }
+         {
+           displaybmi === "" &&
+           <div className="section padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="BMI"
+           type="number"
+           defaultValue={displaybmi}
+           onChange={(e)=>setbmi(e.target.value)}
+           />
+       </div>
+         }
+         {
+           displaybmi != "" &&
+           <div className="section padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="BMI"
+           type="number"
+           defaultValue={displaybmi}
+           onChange={(e)=>setbmi(e.target.value)}
+           />
+       </div>
+         }
           </div>
-          <div className="section padding">
-              <TextField
-              variant="outlined"
-              fullWidth
-              label="Height"
-              defaultValue={displayheight}
-              onChange={(e)=>setheight(e.target.value)}
-              />
-          </div>
-          <div className="section padding">
-              <TextField
-              variant="outlined"
-              fullWidth
-              label="BMI"
-              type="number"
-              defaultValue={displaybmi}
-              onChange={(e)=>setbmi(e.target.value)}
-              />
-          </div>
-          </div>
-        }
+  
   
           <div>
           <center style={{display:`${loading}`}}>
@@ -924,18 +1194,32 @@ aria-describedby="alert-dialog-description"
         </div>
           }
 
-          {
-            update === true &&
+  
             <div>
-          <div className="section padding">
-              <TextField
-              variant="outlined"
-              fullWidth
-              label="fbsrbs"
-              onChange={(e)=>setfbsrbs(e.target.value)}
-              defaultValue={displayfbsrbs}
-              />
-          </div>
+              {
+                displayfbsrbs === "" &&
+                <div className="section padding">
+                <TextField
+                variant="outlined"
+                fullWidth
+                label="fbsrbs"
+                onChange={(e)=>setfbsrbs(e.target.value)}
+                defaultValue={displayfbsrbs}
+                />
+            </div>
+              }
+              {
+                displayfbsrbs != "" &&
+                <div className="section padding">
+                <TextField
+                variant="outlined"
+                fullWidth
+                label="fbsrbs"
+                onChange={(e)=>setfbsrbs(e.target.value)}
+                defaultValue={displayfbsrbs}
+                />
+            </div>
+              }
           {/* <div className="section padding">
 
                         <TextField
@@ -972,7 +1256,7 @@ onChange={(e)=>sethepb(e.target.value)}
               </TextField>
           </div> */}
             </div>
-          }
+       
       
           <div>
           <center style={{display:`${loading}`}}>

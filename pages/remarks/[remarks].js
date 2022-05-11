@@ -35,6 +35,8 @@ const Remarks = () => {
     const [dremarks, setdremarks] = useState("");
     const [bmi, setbmi] = useState("")
     const [fbsrbs, setfbsrbs] = useState("");
+    const [sex, setsex] = useState("")
+    const [age, setage] = useState("")
     useEffect(() => {
         if(sessionStorage.getItem("data") != undefined){
             const user = JSON.parse(sessionStorage.getItem("data"))
@@ -54,6 +56,8 @@ const Remarks = () => {
         ).then((userdata)=>{
           
             setfullname(userdata.fullName)
+            // setage(userdata.age)
+            // setsex(userdata.sex)
             setdisplay(userdata.data.staff)
             console.log(userdata)
             userdata.data.staff.blood.map(blood=>{
@@ -127,21 +131,48 @@ const Remarks = () => {
          
 
             <div>
-                <div className="padding h6 top-border text-bold text-indigo">PERSONAL INFORMATION</div>
-                <div className="">
-                    <div className="padding row-flex">
+                <div className="padding-20 h6 top-border text-bold text-indigo">PERSONAL INFORMATION</div>
+                <table>
+                    <tr>
+                        <td>
+                       <div className="padding row-flex">
                         <div className="text-bold padding-right-10">Full Name: </div>
                         <div className="opacity-3">
                         {display.fullName}
                         </div>
                     </div>
+                        </td>
+                        <td>
+                               
                     <div className="padding row-flex">
                         <div className="text-bold padding-right-10">Staff Id: </div>
                         <div className="opacity-3">
                         {display.staffId}
                         </div>
                     </div>
-                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div className="padding row-flex">
+                        <div className="text-bold padding-right-10">Gender: </div>
+                        <div className="opacity-3">
+                        {display.sex}
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+
+                        <div className="padding row-flex">
+                        <div className="text-bold padding-right-10">Age: </div>
+                        <div className="opacity-3">
+                        {display.age}
+                        </div>
+                    </div>
+                        </td>
+                    </tr>
+                </table>
+              
             </div>
             <div>
                 <div className="padding h6 top-border text-bold text-indigo">EYE CARE</div>
