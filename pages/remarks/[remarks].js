@@ -167,7 +167,7 @@ const Remarks = () => {
             <div>
                 <div className="padding h6 top-border text-bold text-indigo">Blood</div>
                 <div className="row light ">
-                    <div className="col sm-12 md-6 lg-6 padding">
+                    {/* <div className="col sm-12 md-6 lg-6 padding">
                    <div className="row-flex">
                    <div className="text-bold padding-right-10">HepB: </div>
                         <div className="opacity-3">
@@ -182,7 +182,7 @@ const Remarks = () => {
                             {hepc}
                         </div>
                      </div>
-                    </div>
+                    </div> */}
                     <div className="col sm-12 md-6 lg-6 padding">
                      <div className="row-flex">
                      <div className="text-bold padding-right-10">FBSRBS: </div>

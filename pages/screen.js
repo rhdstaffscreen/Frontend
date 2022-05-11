@@ -230,8 +230,9 @@ setsnackmessage("make sure to enter inputs")
 }
 const HandleBpm = ()=>{
   if(role === "bpandbmi" || role ==="super"){
+    // && hr
   setloading("block")
-if(bp == "" && weight === "" && hr && height === "" && bmi === ""){
+if(bp == "" && weight === "" && height === "" && bmi === ""){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 setloading("none")
@@ -240,7 +241,7 @@ setloading("none")
   Axios
   .patch(Endpoint + "/staff/bpandbmi/" + Edituser._id , {
     bp:bp,
-    hr:hr,
+    // hr:hr,
     weight:weight,
     height:height,
     bmi:bmi
@@ -272,15 +273,16 @@ setloading("none")
 const HandleBlood = ()=>{
   setloading("block")
   if(role === "blood" || role === "super"){
-if(fbsrbs === "" && hepb === "" && hepc === ""){
+    // && hepb === "" && hepc === ""
+if(fbsrbs === "" ){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 }else{
   Axios
   .patch(Endpoint + "/staff/blood/" + Edituser._id , {
     fbsrbs:fbsrbs,
-    hepb:hepb,
-    hepc:hepc
+    // hepb:hepb,
+    // hepc:hepc
   },
   {
     headers: {
@@ -674,7 +676,7 @@ aria-describedby="alert-dialog-description"
         }
         {    update === true &&
           <div>
-                <div className="section padding h4">
+                {/* <div className="section padding h4">
                   Blood
                 </div>
                 <div className="padding">
@@ -694,7 +696,7 @@ aria-describedby="alert-dialog-description"
                   defaultValue={displayhepc}
                   disabled
                   />
-              </div>
+              </div> */}
           </div>
         }
         {     update === true &&
@@ -720,7 +722,7 @@ aria-describedby="alert-dialog-description"
                   disabled
                   />
               </div>
-                <div className="padding">
+                {/* <div className="padding">
                   <TextField
                   variant="outlined"
                   fullWidth
@@ -728,7 +730,7 @@ aria-describedby="alert-dialog-description"
                   defaultValue={displayhr}
                   disabled
                   />
-              </div>
+              </div> */}
                 <div className="padding">
                   <TextField
                   variant="outlined"
@@ -825,7 +827,7 @@ aria-describedby="alert-dialog-description"
               onChange={(e)=>setbp(e.target.value)}
               />
           </div>
-          <div className="section padding">
+          {/* <div className="section padding">
               <TextField
               variant="outlined"
               fullWidth
@@ -833,7 +835,7 @@ aria-describedby="alert-dialog-description"
               defaultValue={displayhr}
               onChange={(e)=>sethr(e.target.value)}
               />
-          </div>
+          </div> */}
           <div className="section padding">
               <TextField
               variant="outlined"
@@ -934,7 +936,7 @@ aria-describedby="alert-dialog-description"
               defaultValue={displayfbsrbs}
               />
           </div>
-          <div className="section padding">
+          {/* <div className="section padding">
 
                         <TextField
 id="outlined-select-currency-native"
@@ -951,8 +953,8 @@ onChange={(e)=>sethepb(e.target.value)}
 <option value="Positive(+)">Positive(+)</option>
 <option value="Negative(-)">Negative(-)</option>
 </TextField>
-          </div>
-          <div className="section padding">
+          </div> */}
+          {/* <div className="section padding">
               <TextField
                 id="outlined-select-currency-native"
                 select
@@ -968,7 +970,7 @@ onChange={(e)=>sethepb(e.target.value)}
                 <option value="Positive(+)">Positive(+)</option>
                 <option value="Negative(-)">Negative(-)</option>
               </TextField>
-          </div>
+          </div> */}
             </div>
           }
       

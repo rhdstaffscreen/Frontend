@@ -28,11 +28,13 @@ const [modal, setmodal] = useState(false);
 const [loader, setloader] = useState("none");
 const [email, setemail] = useState("");
 const [password, setpassword] = useState("");
+const [sex, setsex] = useState("")
+const [age, setage] = useState("")
 const HandleRegister = ()=>{
   seterror("none")
   setloader("block")
   setmessage("")
-  if(fullname === "" || unit==="" || staffId ===""){
+  if(fullname === "" || unit==="" || staffId ==="" || sex === "" || age === ""){
     seterror("block")
     setmessage("Please make sure to fill all inputs")
   setloader("none")
@@ -42,7 +44,9 @@ const HandleRegister = ()=>{
   Axios.post(Endpoint + "/staff/register/" , {
     staffId:staffId,
     fullName:fullname,
-    bmc:unit
+    bmc:unit,
+    sex:sex,
+    age:age
   }).then(()=>{
   setloader("none")
     setmodal(true)
@@ -219,6 +223,32 @@ const HandleLogin = ()=>{
            type="password"
            onChange={(e)=>setpassword(e.target.value)}
            />
+         </div>
+         <div className="section padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="age"
+           type="number"
+           onChange={(e)=>setage(e.target.value)}
+           />
+         </div>
+         <div className="section padding">
+         <TextField
+                    id="outlined-select-currency-native"
+                    select
+                    label="Left Eye"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    fullWidth
+                    defaultValue={displaylefteye}
+                    onChange={(e)=>setsex(e.target.value)}
+                  >
+                    <option value=""> </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+              </TextField>
          </div>
          <div style={{display:`${loader}`}}>
          <div className="loaderbox">
