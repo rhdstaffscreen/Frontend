@@ -176,6 +176,32 @@ const HandleLogin = ()=>{
           <option value="Public Health">Public Health</option>
         </TextField>
          </div>
+         <div className="section padding">
+           <TextField
+           variant="outlined"
+           fullWidth
+           label="age"
+           type="number"
+           onChange={(e)=>setage(e.target.value)}
+           />
+         </div>
+         <div className="section padding">
+         <TextField
+                    id="outlined-select-currency-native"
+                    select
+                    label="Left Eye"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    fullWidth
+                    defaultValue={displaylefteye}
+                    onChange={(e)=>setsex(e.target.value)}
+                  >
+                    <option value=""> </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+              </TextField>
+         </div>
          <div style={{display:`${loader}`}}>
          <div className="loaderbox">
           <div className="loadercontainer">
@@ -224,32 +250,7 @@ const HandleLogin = ()=>{
            onChange={(e)=>setpassword(e.target.value)}
            />
          </div>
-         <div className="section padding">
-           <TextField
-           variant="outlined"
-           fullWidth
-           label="age"
-           type="number"
-           onChange={(e)=>setage(e.target.value)}
-           />
-         </div>
-         <div className="section padding">
-         <TextField
-                    id="outlined-select-currency-native"
-                    select
-                    label="Left Eye"
-                    SelectProps={{
-                      native: true,
-                    }}
-                    fullWidth
-                    defaultValue={displaylefteye}
-                    onChange={(e)=>setsex(e.target.value)}
-                  >
-                    <option value=""> </option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-              </TextField>
-         </div>
+
          <div style={{display:`${loader}`}}>
          <div className="loaderbox">
           <div className="loadercontainer">
