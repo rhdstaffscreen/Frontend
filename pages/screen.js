@@ -3,7 +3,7 @@ import Image from 'next/image'
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import MenuItem from '@mui/material/MenuItem';
-import {useEffect, useState} from "react"
+import {useEffect, useState,useRef} from "react"
 import Online from '../Components/Online';
 import Axios from "axios"
 import * as React from 'react';
@@ -29,6 +29,10 @@ const Screen = () => {
     { name: 'Group D', value: 200 },
   ];
 
+  const eyeForm = useRef(null)
+  const bmiForm = useRef(null)
+  const bloodForm = useRef(null)
+
   const Endpoint = "https://rhdscreen-api.herokuapp.com"
     const [data, setdata] = useState([]);
     const [email, setemail] = useState(" ");
@@ -47,16 +51,16 @@ const Screen = () => {
     const [showsuper, setshowsuper] = useState("none");
     const [loadOnce, setloadOnce] = useState(false)
     const [total, settotal] = useState("")
-const [righteye, setrighteye] = useState("");
-const [lefteye, setlefteye] = useState("");
+// const [righteye, setrighteye] = useState("");
+// const [lefteye, setlefteye] = useState("");
 
-const [bp, setbp] = useState("");
-const [hr, sethr] = useState("");
-const [weight, setweight] = useState("");
-const [height, setheight] = useState("");
-const [bmi, setbmi] = useState("")
+// const [bp, setbp] = useState("");
+// const [hr, sethr] = useState("");
+// const [weight, setweight] = useState("");
+// const [height, setheight] = useState("");
+// const [bmi, setbmi] = useState("")
 
-const [fbsrbs, setfbsrbs] = useState("");
+// const [fbsrbs, setfbsrbs] = useState("");
 const [ hepb, sethepb] = useState("");
 const [ hepc, sethepc] = useState("");
 
@@ -116,6 +120,7 @@ Axios.get(Endpoint + "/staff/showall" ,  {
 const [Edituser, setEdituser] = useState([]);
 const [update, setupdate] = useState(false);
 const HandleEdit = (currentuser)=>{
+    setEdituser(currentuser)
   setupdate(false)
   setdisplayhepb("")
   setdisplayhepc("")
@@ -146,7 +151,7 @@ setdisplayremarks(currentuser.remarks)
   // })
 
   // p.then(selectuser=>{
-  //   setEdituser(selectuser)
+  
   //   console.log(selectuser)
 
 
@@ -252,12 +257,16 @@ currentuser.bpandbmi.map(bpm=>{
 
 
 const HandleEyeCare = ()=>{
+const eyeRef = eyeForm.current;
+const lefteye = eyeRef["lefteye"].value
+const righteye = eyeRef["righteye"].value
 if(role === "eyecare" || role === "super"){
-  setloading("block")
-if(righteye == "" || lefteye === ""){
+alert("right " + righteye + " left " + lefteye)
+if(righteye === "" || lefteye === ""){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 }else{
+  setloading("block")
   Axios
   .patch(Endpoint + "/staff/eyecare/" + Edituser._id , {
     righteye:righteye,
@@ -286,15 +295,21 @@ setsnackmessage("make sure to enter inputs")
 }
 }
 const HandleBpm = ()=>{
+  const bmiRef = bmiForm.current;
+const bp = bmiRef["bp"].value
+const weight = bmiRef["weight"].value
+const height = bmiRef["height"].value
+const bmi = bmiRef["bmi"].value
   if(role === "bpandbmi" || role ==="super"){
     // && hr
-  setloading("block")
-if(bp == "" && weight === "" && height === "" && bmi === ""){
+
+if(bp === "" && weight === "" && height === "" && bmi === ""){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 setloading("none")
 
 }else{
+  setloading("block")
   Axios
   .patch(Endpoint + "/staff/bpandbmi/" + Edituser._id , {
     bp:bp,
@@ -328,13 +343,15 @@ setloading("none")
 }
 }
 const HandleBlood = ()=>{
-  setloading("block")
+  const bloodRef = bloodForm.current;
+const fbsrbs = bloodRef["fbsrbs"].value
   if(role === "blood" || role === "super"){
     // && hepb === "" && hepc === ""
 if(fbsrbs === "" ){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 }else{
+    setloading("block")
   Axios
   .patch(Endpoint + "/staff/blood/" + Edituser._id , {
     fbsrbs:fbsrbs,
@@ -565,7 +582,7 @@ aria-describedby="alert-dialog-description"
 </DialogTitle>
 <DialogContent>
 <DialogContentText id="alert-dialog-description">
-<div className="editmodal" >
+<form ref={eyeForm} className="editmodal">
       <div className="form center">
   
           {
@@ -577,6 +594,7 @@ aria-describedby="alert-dialog-description"
             label="Staff Id"
             defaultValue={Edituser.staffId}
             disabled
+
             />
         </div>
 
@@ -595,7 +613,8 @@ aria-describedby="alert-dialog-description"
                      }}
                      fullWidth
                      defaultValue={displayrighteye}
-                     onChange={(e)=>setrighteye(e.target.value)}
+                    //  onChange={(e)=>setrighteye(e.target.value)}
+                     name="righteye"
                    >
                      <option value=""> </option>
                      <option value="6/12">6/12</option>
@@ -626,7 +645,8 @@ aria-describedby="alert-dialog-description"
                      }}
                      fullWidth
                      defaultValue={displayrighteye}
-                     onChange={(e)=>setrighteye(e.target.value)}
+                    //  onChange={(e)=>setrighteye(e.target.value)}
+                    name="righteye"
                    >
                      <option value=""> </option>
                      <option value="6/12">6/12</option>
@@ -659,7 +679,8 @@ aria-describedby="alert-dialog-description"
           }}
           fullWidth
           defaultValue={displaylefteye}
-          onChange={(e)=>setlefteye(e.target.value)}
+          // onChange={(e)=>setlefteye(e.target.value)}
+          name="lefteye"
         >
           <option value=""> </option>
           <option value="6/12">6/12</option>
@@ -689,7 +710,9 @@ aria-describedby="alert-dialog-description"
           }}
           fullWidth
           defaultValue={displaylefteye}
-          onChange={(e)=>setlefteye(e.target.value)}
+          // onChange={(e)=>setlefteye(e.target.value)}
+          name="lefteye"
+
         >
           <option value=""> </option>
           <option value="6/12">6/12</option>
@@ -730,7 +753,7 @@ aria-describedby="alert-dialog-description"
           </Button>
           </div>
       </div>
-  </div>
+  </form>
 </DialogContentText>
 </DialogContent>
 <DialogActions>
@@ -1009,7 +1032,7 @@ aria-describedby="alert-dialog-description"
 </DialogTitle>
 <DialogContent>
 <DialogContentText id="alert-dialog-description">
-<div className="editmodal" >
+<form ref={bmiForm} className="editmodal" >
       <div className="form center">
           {
             update === true &&
@@ -1033,7 +1056,8 @@ aria-describedby="alert-dialog-description"
               fullWidth
               label="Bp"
               defaultValue={displaybp}
-              onChange={(e)=>setbp(e.target.value)}
+              // onChange={(e)=>setbp(e.target.value)}
+              name="bp"
               />
               </div>
             }
@@ -1045,7 +1069,9 @@ aria-describedby="alert-dialog-description"
               fullWidth
               label="Bp"
               defaultValue={displaybp}
-              onChange={(e)=>setbp(e.target.value)}
+              // onChange={(e)=>setbp(e.target.value)}
+              name="bp"
+
               />
               </div>
             }
@@ -1058,7 +1084,8 @@ aria-describedby="alert-dialog-description"
                fullWidth
                label="Height"
                defaultValue={displayheight}
-               onChange={(e)=>setheight(e.target.value)}
+              //  onChange={(e)=>setheight(e.target.value)}
+              name="height"
 
                />
            </div>
@@ -1071,7 +1098,9 @@ aria-describedby="alert-dialog-description"
                fullWidth
                label="Height"
                defaultValue={displayheight}
-               onChange={(e)=>setheight(e.target.value)}
+              //  onChange={(e)=>setheight(e.target.value)}
+              name="height"
+
                />
            </div>
              }
@@ -1092,7 +1121,9 @@ aria-describedby="alert-dialog-description"
            fullWidth
            label="Weight"
            defaultValue={displayweight}
-           onChange={(e)=>setweight(e.target.value)}
+          //  onChange={(e)=>setweight(e.target.value)}
+          name="weight"
+
            />
        </div>
          }
@@ -1104,7 +1135,9 @@ aria-describedby="alert-dialog-description"
            fullWidth
            label="Weight"
            defaultValue={displayweight}
-           onChange={(e)=>setweight(e.target.value)}
+          //  onChange={(e)=>setweight(e.target.value)}
+          name="weight"
+
            />
        </div>
          }
@@ -1117,7 +1150,10 @@ aria-describedby="alert-dialog-description"
            label="BMI"
            type="number"
            defaultValue={displaybmi}
-           onChange={(e)=>setbmi(e.target.value)}
+          //  onChange={(e)=>setbmi(e.target.value)}
+          name="bmi"
+
+
            />
        </div>
          }
@@ -1130,7 +1166,9 @@ aria-describedby="alert-dialog-description"
            label="BMI"
            type="number"
            defaultValue={displaybmi}
-           onChange={(e)=>setbmi(e.target.value)}
+          //  onChange={(e)=>setbmi(e.target.value)}
+          name="bmi"
+
            />
        </div>
          }
@@ -1155,7 +1193,7 @@ aria-describedby="alert-dialog-description"
           </Button>
           </div>
       </div>
-  </div>
+  </form>
 </DialogContentText>
 </DialogContent>
 <DialogActions>
@@ -1177,7 +1215,7 @@ aria-describedby="alert-dialog-description"
 </DialogTitle>
 <DialogContent>
 <DialogContentText id="alert-dialog-description">
-<div className="editmodal" >
+<form ref={bloodForm} className="editmodal" >
       <div className="form center">
 
           
@@ -1204,7 +1242,8 @@ aria-describedby="alert-dialog-description"
                 fullWidth
                 label="fbsrbs"
                 onChange={(e)=>setfbsrbs(e.target.value)}
-                defaultValue={displayfbsrbs}
+                // defaultValue={displayfbsrbs}
+                name="fbsrbs"
                 />
             </div>
               }
@@ -1217,6 +1256,7 @@ aria-describedby="alert-dialog-description"
                 label="fbsrbs"
                 onChange={(e)=>setfbsrbs(e.target.value)}
                 defaultValue={displayfbsrbs}
+                name="fbsrbs"
                 />
             </div>
               }
@@ -1276,7 +1316,7 @@ onChange={(e)=>sethepb(e.target.value)}
           </Button>
           </div>
       </div>
-  </div>
+  </form>
 </DialogContentText>
 </DialogContent>
 <DialogActions>
@@ -1298,26 +1338,29 @@ className="width-300-min"
 >
 <DialogTitle id="alert-dialog-title">
 <div>
-  Super
+<div className='h2'>
+  Super Admin
+</div>
+<div>
+    Super admin has control over all database
+  </div>
 </div>
 </DialogTitle>
 <DialogContent>
 <DialogContentText id="alert-dialog-description">
 <div className="">
-  <div className="section">
-    Super admin has control over all database
-  </div>
+
   <div className="section">
   <Button fullWidth variant="contained" onClick={EyeOpen}>Eye Care</Button>
   </div>
   <div className="section">
-  <Button fullWidth variant="contained" onClick={BloodOpen}>Blood</Button>
+  <Button fullWidth variant="contained" color="success" onClick={BloodOpen}>Blood</Button>
   </div>
   <div className="section">
-  <Button fullWidth variant="contained" onClick={BpmOpen}>BPANDBMI</Button>
+  <Button fullWidth variant="contained" color="info" onClick={BpmOpen}>BPANDBMI</Button>
   </div>
   <div className="section">
-  <Button fullWidth variant="contained" onClick={RemarksOpen}>Remarks</Button>
+  <Button fullWidth variant="contained" color="warning" onClick={RemarksOpen}>Remarks</Button>
   </div>
 </div>
 </DialogContentText>
