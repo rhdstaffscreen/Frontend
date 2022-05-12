@@ -261,7 +261,7 @@ const eyeRef = eyeForm.current;
 const lefteye = eyeRef["lefteye"].value
 const righteye = eyeRef["righteye"].value
 if(role === "eyecare" || role === "super"){
-alert("right " + righteye + " left " + lefteye)
+
 if(righteye === "" || lefteye === ""){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
