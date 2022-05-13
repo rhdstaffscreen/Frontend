@@ -32,6 +32,7 @@ const Screen = () => {
   const eyeForm = useRef(null)
   const bmiForm = useRef(null)
   const bloodForm = useRef(null)
+  const remarksForm = useRef(null)
 
   const Endpoint = "https://rhdscreen-api.herokuapp.com"
     const [data, setdata] = useState([]);
@@ -64,7 +65,7 @@ const Screen = () => {
 const [ hepb, sethepb] = useState("");
 const [ hepc, sethepc] = useState("");
 
-const [remarks, setremarks] = useState("");
+// const [remarks, setremarks] = useState("");
 
 
 const [display, setdisplay] = useState([]);
@@ -389,12 +390,15 @@ setloading("none")
 }
 
 const HandleRemarks = ()=>{
-  setloading("block")
+  const remarksRef = remarksForm.current;
+const remarks = remarksRef["remarks"].value
+ 
   if(role === "remarks" || role === "super"){
 if(remarks === ""){
 setsnackbar(true)
 setsnackmessage("make sure to enter inputs")
 }else{
+  setloading("block")
   Axios
   .patch(Endpoint + "/staff/remarks/" + Edituser._id , {
     remarks:remarks
@@ -953,7 +957,9 @@ aria-describedby="alert-dialog-description"
            />
        </div>
          }
-        {
+
+         <form ref={remarksForm} >
+         {
           displayremarks === "" &&
           <div className="section padding">
           <TextField
@@ -963,7 +969,9 @@ aria-describedby="alert-dialog-description"
           multiline
           rows={2}
           defaultValue={displayremarks}
-          onChange={(e)=>setremarks(e.target.value)}
+          // onChange={(e)=>setremarks(e.target.value)}
+          name="remarks"
+
           />
         </div>
         }
@@ -977,10 +985,13 @@ aria-describedby="alert-dialog-description"
           multiline
           rows={2}
           defaultValue={displayremarks}
-          onChange={(e)=>setremarks(e.target.value)}
+          // onChange={(e)=>setremarks(e.target.value)}
+          name="remarks"
           />
         </div>
         }
+         </form>
+   
           </div>
                   
 
