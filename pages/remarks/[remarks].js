@@ -61,8 +61,8 @@ const Remarks = () => {
             setdisplay(userdata.data.staff)
             console.log(userdata)
             userdata.data.staff.blood.map(blood=>{
-                sethepb(blood.hepb)
-                sethepc(blood.hepc)
+                // sethepb(blood.hepb)
+                // sethepc(blood.hepc)
                 setfbsrbs(blood.fbsrbs)
             })
             
@@ -72,7 +72,7 @@ const Remarks = () => {
             })
             
             userdata.data.staff.bpandbmi.map(bpm=>{
-              sethr(bpm.hr)
+            //   sethr(bpm.hr)
               setbp(bpm.bp)
               setheight(bpm.height)
               setweight(bpm.weight)
@@ -243,14 +243,14 @@ const Remarks = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col sm-12 md-6 lg-6 padding">
+                    {/* <div className="col sm-12 md-6 lg-6 padding">
                        <div className="row-flex">
                        <div className="text-bold padding-right-10">Hr: </div>
                         <div className="opacity-3">
                             {hr}
                         </div>
                        </div>
-                    </div>
+                    </div> */}
                     <div className="col sm-12 md-6 lg-6 padding">
                        <div className="row-flex">
                        <div className="text-bold padding-right-10">Weight: </div>

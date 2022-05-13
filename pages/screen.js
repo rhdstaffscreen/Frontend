@@ -282,16 +282,19 @@ setsnackmessage("make sure to enter inputs")
     setsnackbar(true)
     setsnackmessage("Updated successfully")
     seteyecaremodal(false)
+    setloading("none")
   }).catch(err=>{
     console.log(err)
     seteyecaremodal(false)
     setsnackbar(true)
     setsnackmessage(err.message)
+    setloading("none")
   })
 }
 }else{
   setsnackbar(true)
   setsnackmessage("Unauthorized access")
+  setloading("none")
 }
 }
 const HandleBpm = ()=>{
@@ -849,27 +852,19 @@ aria-describedby="alert-dialog-description"
    
         {    update === true &&
           <div>
-                {/* <div className="section padding h4">
+                <div className="section padding h4">
                   Blood
                 </div>
                 <div className="padding">
                   <TextField
                   variant="outlined"
                   fullWidth
-                  label="Hepb"
-                  defaultValue={displayhepb}
+                  label="Fbsrbs"
+                  defaultValue={fbsrbs}
                   disabled
                   />
               </div>
-                <div className="padding">
-                  <TextField
-                  variant="outlined"
-                  fullWidth
-                  label="Hepc"
-                  defaultValue={displayhepc}
-                  disabled
-                  />
-              </div> */}
+          
           </div>
         }
 
