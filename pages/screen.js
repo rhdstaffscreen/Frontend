@@ -163,14 +163,14 @@ if(role === "super"){
       setdisplaylefteye(eye.lefteye)
       setdisplayrighteye(eye.righteye)
       setupdate(true)
-      console.log("empty")
+      
     })
     currentuser.blood.map(blood=>{
       // setdisplayhepb(blood.hepb)
       // setdisplayhepc(blood.hepc)
       setdisplayfbsrbs(blood.fbsrbs)
       setupdate(true)
-      console.log("not empty")
+      
   })
   currentuser.bpandbmi.map(bpm=>{
     // setdisplayhr(bpm.hr)
@@ -187,12 +187,12 @@ if(role === "super"){
       setdisplaylefteye(eye.lefteye)
       setdisplayrighteye(eye.righteye)
       setupdate(true)
-      console.log("empty")
+      
     })
 
          }else{
           setupdate(true)
-          console.log("not empty")
+          
          }
 }else if(role =="bpandbmi"){
 setBpmmodal(true)
@@ -213,7 +213,7 @@ if(currentuser.bpandbmi != []){
 setbloodmodal(true)
 if(currentuser.blood === []){
   setupdate(true)
-  console.log("empty")
+  
  }else{
 
   currentuser.blood.map(blood=>{
@@ -221,7 +221,7 @@ if(currentuser.blood === []){
     // setdisplayhepc(blood.hepc)
     setdisplayfbsrbs(blood.fbsrbs)
     setupdate(true)
-    console.log("not empty")
+    
 })
  }
 }else if(role === "remarks"){
@@ -235,14 +235,14 @@ if(currentuser.blood === []){
     setdisplaylefteye(eye.lefteye)
     setdisplayrighteye(eye.righteye)
     setupdate(true)
-    console.log("empty")
+    
   })
   currentuser.blood.map(blood=>{
     // setdisplayhepb(blood.hepb)
     // setdisplayhepc(blood.hepc)
     setdisplayfbsrbs(blood.fbsrbs)
     setupdate(true)
-    console.log("not empty")
+    
 })
 currentuser.bpandbmi.map(bpm=>{
   // setdisplayhr(bpm.hr)
@@ -1236,8 +1236,8 @@ aria-describedby="alert-dialog-description"
                 variant="outlined"
                 fullWidth
                 label="fbsrbs"
-                onChange={(e)=>setfbsrbs(e.target.value)}
-                // defaultValue={displayfbsrbs}
+                // onChange={(e)=>setfbsrbs(e.target.value)}
+                defaultValue={displayfbsrbs}
                 name="fbsrbs"
                 />
             </div>
@@ -1249,7 +1249,7 @@ aria-describedby="alert-dialog-description"
                 variant="outlined"
                 fullWidth
                 label="fbsrbs"
-                onChange={(e)=>setfbsrbs(e.target.value)}
+                // onChange={(e)=>setfbsrbs(e.target.value)}
                 defaultValue={displayfbsrbs}
                 name="fbsrbs"
                 />
